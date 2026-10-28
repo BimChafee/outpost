@@ -10,6 +10,7 @@ import { Settings } from './views/settings.js';
 import { Setup } from './views/setup.js';
 import { ReceiptCamera } from './views/camera.js';
 import { Calendar } from './views/calendar.js';
+import { applyTheme } from './theme.js';
 
 const TABS = [
   { id: 'home', label: 'Home', icon: 'home' },
@@ -148,6 +149,7 @@ function App({ st, bundledSchedule }) {
 }
 
 async function boot() {
+  applyTheme();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('./sw.js').catch((e) => console.warn('SW registration failed', e));
   }

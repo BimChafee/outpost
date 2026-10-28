@@ -1,9 +1,9 @@
 // Service worker: offline app shell + background push display.
 importScripts('./config.js');
 
-const VERSION = 'tmo-v7';
+const VERSION = 'tmo-v8';
 const SHELL = [
-  './', './index.html', './styles.css', './config.js', './manifest.webmanifest',
+  './', './index.html', './styles.css', './theme-cyber.css', './js/theme.js', './js/views/look.js', './config.js', './manifest.webmanifest',
   './data/schedule.json', './icons/icon-192.png', './icons/icon-512.png',
   './js/main.js', './js/ui.js', './js/store.js', './js/schedule.js', './js/money.js', './js/receipt.js', './js/push.js',
   './js/views/home.js', './js/views/groceries.js', './js/views/ledger.js', './js/views/bill.js',

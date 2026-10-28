@@ -3,6 +3,7 @@ import { newId } from '../store.js';
 import { enablePush, pushAvailable, pushPermission } from '../push.js';
 import { CLAUDE_KEY } from './bill.js';
 import { HouseDetails } from './house.js';
+import { LookSettings } from './look.js';
 
 export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe }) {
   const [newName, setNewName] = useState('');
@@ -62,6 +63,8 @@ export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe 
         <button class="btn" aria-label="Add roommate"><${Icon} name="plus" /></button>
       </form>
     </section>
+
+    <${LookSettings} />
 
     <${HouseDetails} st=${st} hid=${hid} household=${household} />
 
