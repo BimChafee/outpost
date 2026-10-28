@@ -1,6 +1,6 @@
 import { html, useState, Icon, Chip, Sheet, toast } from '../ui.js';
 import { parseDay } from '../schedule.js';
-import { KINDS, kindsFor, REPEATS, normaliseEvent, whenText, repeatText } from '../calendar-model.js';
+import { KINDS, kindsFor, REPEATS, normaliseEvent, whenText, repeatText, occurrences } from '../calendar-model.js';
 
 const longDate = (k) => parseDay(k).toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric' });
 
@@ -13,7 +13,7 @@ export function EventEditor({ st, hid, me, members, event, initial, onClose }) {
     date: base.date || initial?.date, endDate: base.endDate || base.date || initial?.date,
     allDay: base.allDay ?? false, start: base.start || '18:00', end: base.end || '',
     location: base.location || '', notes: base.notes || '',
-    repeat: base.repeat || 'none', until: base.until || '', skip: base.skip || [],
+    repeat: base.repeat || 'none', until: base.until || '', skip: base.skip || [], every: base.every || 8,
     going: base.going || [], notGoing: base.notGoing || [],
   }));
   const [saving, setSaving] = useState(false);
@@ -71,9 +71,26 @@ export function EventEditor({ st, hid, me, members, event, initial, onClose }) {
         </select></label>
       ${f.repeat !== 'none' && html`<label class="field narrow"><span>Until (optional)</span><input type="date" value=${f.until} min=${f.date} onInput=${(e) => set({ until: e.target.value })} /></label>`}
     </div>
+    ${f.repeat === 'custom' && html`<div class="every-row">
+      <label class="field"><span>Repeat every</span>
+        <span class="every-input"><input type="number" inputmode="numeric" min="1" max="366" step="1" value=${f.every}
+          onInput=${(e) => set({ every: e.target.value })} aria-label="Number of days between repeats" /><b>days</b></span></label>
+      <${NextDates} f=${f} />
+    </div>`}
     <label class="field"><span>Where</span><input value=${f.location} onInput=${(e) => set({ location: e.target.value })} placeholder=${f.owner === 'house' ? 'Backyard' : 'Optional'} /></label>
     <label class="field"><span>Notes</span><textarea rows="2" value=${f.notes} onInput=${(e) => set({ notes: e.target.value })} placeholder=${f.owner === 'house' ? 'Bring a dish, music off by 1 a.m.' : 'Optional'}></textarea></label>
   <//>`;
+}
+
+/** The next few dates a repeating event lands on, so a rotation can be checked before saving. */
+function NextDates({ f }) {
+  const n = Math.round(Number(f.every));
+  if (!f.date || !(n >= 1 && n <= 366)) return null;
+  const end = new Date(parseDay(f.date)); end.setDate(end.getDate() + n * 3);
+  const to = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, '0')}-${String(end.getDate()).padStart(2, '0')}`;
+  const next = occurrences([{ ...f, id: 'preview', repeat: 'custom', every: n, endDate: f.date }], f.date, to).slice(0, 4);
+  const fmt = (k) => { const d = parseDay(k); return `${d.toLocaleDateString('en-CA', { weekday: 'short' })} ${d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}`; };
+  return html`<p class="hint every-next">Lands on ${next.map((o) => fmt(o.date)).join(', ')}${next.length ? ', and so on.' : ''}</p>`;
 }
 
 export function EventDetail({ st, hid, me, members, o, onClose, onEdit }) {

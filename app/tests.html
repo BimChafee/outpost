@@ -9,7 +9,7 @@
 import { splitCents, billShares, billTotal, balances, settleUp } from './js/money.js';
 import { upcomingPickups } from './js/schedule.js';
 import { parseReceiptText, reconcile } from './js/receipt.js';
-import { dayTimeLabel, occurrences, packLane, weekStart, weekDays, monthGrid, awayOn, normaliseEvent, fmtTime, fmtTimeShort } from './js/calendar-model.js';
+import { repeatText, dayTimeLabel, occurrences, packLane, weekStart, weekDays, monthGrid, awayOn, normaliseEvent, fmtTime, fmtTimeShort } from './js/calendar-model.js';
 import { rentInfo } from './js/views/house.js';
 import { statusOf, applyView, sectionize, orderAfterMove, bumpQty, statusPatch, parseEntry, HISTORY_DAYS } from './js/grocery-model.js';
 
@@ -148,6 +148,15 @@ const p2 = packLane(occurrences([
 eq('overlaps stack into rows, free space reused', p2.items.map((s) => [s.o.ev.id, s.row]), [['a', 0], ['b', 1], ['c', 0]]);
 eq('rows needed', p2.rows, 2);
 eq('overnight shift label on each day', ['2026-11-03','2026-11-04'].map((d) => dayTimeLabel(occ.find((o) => o.ev.id === 'night'), d)), ['10p', 'til 6a']);
+
+const rot = { id: 'rot', title: 'Work', owner: 'm1', kind: 'work', date: '2026-11-03', endDate: '2026-11-03', start: '07:00', repeat: 'custom', every: 8, skip: ['2026-11-19'] };
+eq('every 8 days', occurrences([rot], '2026-11-01', '2026-12-10').map((o) => o.date), ['2026-11-03', '2026-11-11', '2026-11-27', '2026-12-05']);
+eq('every 8 days, window far ahead', occurrences([rot], '2027-03-01', '2027-03-20').map((o) => o.date), ['2027-03-03', '2027-03-11', '2027-03-19']);
+eq('every N days text', [repeatText(rot), repeatText({ ...rot, until: '2026-12-31' })], ['Every 8 days', 'Every 8 days, until Dec 31']);
+eq('custom repeat needs a day count', normaliseEvent({ title: 'x', date: '2026-11-03', start: '07:00', repeat: 'custom', every: '0', owner: 'm1', kind: 'work' }).ok, false);
+eq('custom repeat saved', normaliseEvent({ title: 'x', date: '2026-11-03', start: '07:00', repeat: 'custom', every: '8', owner: 'm1', kind: 'work' }).doc.every, 8);
+eq('other repeats store no day count', normaliseEvent({ title: 'x', date: '2026-11-03', start: '07:00', repeat: 'weekly', every: '8', owner: 'm1', kind: 'work' }).doc.every, null);
+
 eq('who is away', awayOn(occ, '2026-11-07'), ['m2']);
 eq('time formats', [fmtTime('09:00'), fmtTime('17:30'), fmtTime('00:15'), fmtTimeShort('13:00')], ['9 a.m.', '5:30 p.m.', '12:15 a.m.', '1p']);
 eq('end before start is rejected', normaliseEvent({ title: 'x', date: '2026-11-02', endDate: '2026-11-02', start: '22:00', end: '06:00', owner: 'm1', kind: 'work' }).ok, false);

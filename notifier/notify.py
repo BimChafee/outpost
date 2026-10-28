@@ -136,6 +136,12 @@ def occurs_on(ev: dict, day: dt.date) -> bool:
         return (day - start).days % step == 0
     if rep == "monthly":
         return day.day == start.day
+    if rep == "custom":
+        try:
+            every = max(1, round(float(ev.get("every") or 1)))
+        except (TypeError, ValueError):
+            every = 1
+        return (day - start).days % every == 0
     return False
 
 

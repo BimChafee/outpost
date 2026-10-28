@@ -3,7 +3,8 @@
 // Event doc (households/{hid}/events/{id}):
 //   { title, owner: memberId | 'house', kind, date: 'YYYY-MM-DD', endDate: 'YYYY-MM-DD',
 //     allDay: bool, start: 'HH:MM' | '', end: 'HH:MM' | '', location, notes,
-//     repeat: 'none'|'daily'|'weekly'|'biweekly'|'monthly', until: 'YYYY-MM-DD' | '', skip: ['YYYY-MM-DD'],
+//     repeat: 'none'|'daily'|'weekly'|'biweekly'|'monthly'|'custom', every: days (custom only),
+//     until: 'YYYY-MM-DD' | '', skip: ['YYYY-MM-DD'],
 //     going: [memberId], notGoing: [memberId], createdBy, createdAt }
 // Times are house-local wall-clock times: everyone lives in the same place.
 
@@ -24,6 +25,7 @@ export const kindsFor = (owner) => Object.entries(KINDS).filter(([, k]) => k.hou
 
 export const REPEATS = [
   ['none', "Doesn't repeat"], ['daily', 'Every day'], ['weekly', 'Every week'], ['biweekly', 'Every 2 weeks'], ['monthly', 'Every month'],
+  ['custom', 'Every … days'],
 ];
 
 const daysApart = (a, b) => Math.round((parseDay(b) - parseDay(a)) / 86400000);
@@ -82,7 +84,7 @@ export function occurrences(events, from, to) {
       }
       continue;
     }
-    const step = rep === 'daily' ? 1 : rep === 'weekly' ? 7 : 14;
+    const step = rep === 'custom' ? everyDays(ev) : rep === 'daily' ? 1 : rep === 'weekly' ? 7 : 14;
     // Jump close to the window instead of walking from the first occurrence.
     const behind = daysApart(ev.date, from) - span;
     let i = behind > 0 ? Math.floor(behind / step) : 0;
@@ -168,8 +170,11 @@ export function whenText(o, dayKeyShown) {
   return ev.end ? `${fmtTime(ev.start)} to ${fmtTime(ev.end)}` : fmtTime(ev.start);
 }
 
+/** Days between repeats for a custom repeat (rotations like "every 8 days"). */
+export const everyDays = (ev) => Math.max(1, Math.round(Number(ev.every) || 1));
+
 export function repeatText(ev) {
-  const r = REPEATS.find(([k]) => k === (ev.repeat || 'none'))?.[1] || '';
+  const r = ev.repeat === 'custom' ? `Every ${everyDays(ev)} days` : REPEATS.find(([k]) => k === (ev.repeat || 'none'))?.[1] || '';
   if (!ev.repeat || ev.repeat === 'none') return '';
   return ev.until ? `${r}, until ${parseDay(ev.until).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}` : r;
 }
@@ -186,6 +191,8 @@ export function normaliseEvent(f) {
   if (!f.date) return { ok: false, error: 'Pick a date' };
   const endDate = f.endDate && f.endDate >= f.date ? f.endDate : f.date;
   if (!f.allDay && !f.start) return { ok: false, error: 'Pick a start time, or make it all day' };
+  const every = Math.round(Number(f.every));
+  if (f.repeat === 'custom' && !(every >= 1 && every <= 366)) return { ok: false, error: 'Enter how many days between repeats, from 1 to 366' };
   if (!f.allDay && f.end && endDate === f.date && f.end <= f.start) {
     return { ok: false, error: 'It ends before it starts. For an overnight shift, set the end date to the next day.' };
   }
@@ -196,6 +203,7 @@ export function normaliseEvent(f) {
       start: f.allDay ? '' : f.start, end: f.allDay ? '' : (f.end || ''),
       location: (f.location || '').trim(), notes: (f.notes || '').trim(),
       repeat: f.repeat || 'none', until: f.repeat && f.repeat !== 'none' ? (f.until || '') : '',
+      every: f.repeat === 'custom' ? every : null,
       skip: f.skip || [], going: f.going || [], notGoing: f.notGoing || [],
     },
   };

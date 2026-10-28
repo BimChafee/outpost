@@ -737,6 +737,12 @@ select { width: 100%; min-height: 50px; padding: 10px 12px; border: 1.5px solid 
 .rsvp p b { color: var(--ink); }
 .rsvp-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
+.every-row { display: grid; gap: 6px; }
+.every-input { display: flex; align-items: center; gap: 10px; }
+.every-input input { width: 6rem !important; font: 600 1.2rem var(--display); }
+.every-input b { font-weight: 600; color: var(--ink-2); }
+.every-next { margin-top: -2px; }
+
 /* home: today */
 .today { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r-m); }
 .today li + li { border-top: 1px solid var(--rule); }

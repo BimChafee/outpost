@@ -1,7 +1,7 @@
 // Service worker: offline app shell + background push display.
 importScripts('./config.js');
 
-const VERSION = 'tmo-v10';
+const VERSION = 'tmo-v11';
 const SHELL = [
   './', './index.html', './styles.css', './theme-cyber.css', './theme-osrs.css', './theme-wotlk.css', './theme-persona.css', './theme-moonring.css', './js/theme.js', './js/views/look.js', './config.js', './manifest.webmanifest',
   './data/schedule.json', './icons/icon-192.png', './icons/icon-512.png',
