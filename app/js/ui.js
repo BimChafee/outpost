@@ -23,6 +23,7 @@ const P = {
   image: 'M4 5h16v14H4zM4 15.5l4.5-4.5 4 4 2.5-2.5 5 5M15.5 9.5a1 1 0 100-2 1 1 0 000 2z',
   scan: 'M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4M8 9h8M8 12h8M8 15h5',
   undo: 'M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 010 11H11',
+  edit: 'M4 20h4L19 9a2.8 2.8 0 00-4-4L4 16zM13.5 6.5l4 4',
   repeat: 'M17 2.5l3 3-3 3M4 11.5V10a4.5 4.5 0 014.5-4.5H20M7 21.5l-3-3 3-3M20 12.5V14a4.5 4.5 0 01-4.5 4.5H4',
 };
 export const Icon = ({ name, size = 22, label }) => html`

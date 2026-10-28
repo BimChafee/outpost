@@ -36,7 +36,8 @@ export function Upkeep({ st, hid, me, members, upkeep }) {
   const markDone = async (u) => {
     const before = { lastDone: u.lastDone, lastDoneBy: u.lastDoneBy || null, history: u.history || [] };
     const history = [{ date: today(), by: me }, ...(u.history || [])].slice(0, 12);
-    await st.update(hid, 'upkeep', u.id, { lastDone: today(), lastDoneBy: me, history });
+    try { await st.update(hid, 'upkeep', u.id, { lastDone: today(), lastDoneBy: me, history }); }
+    catch (e) { console.error(e); return toast(`Couldn't update the job: ${e.message}`); }
     toast(`${u.name} done. Next due ${shortDate(upkeepStatus({ ...u, lastDone: today() }).due)}.`,
       { label: 'Undo', run: () => st.update(hid, 'upkeep', u.id, before) });
   };
@@ -54,6 +55,7 @@ export function Upkeep({ st, hid, me, members, upkeep }) {
             <${Sign} kind=${u.s.tone === 'ok' ? 'safe' : 'warning'} size=${30} />
             <button class="job-name" onClick=${() => setEditing(u)} aria-label=${`Edit ${u.name}`}>${u.name}</button>
             <span class="job-due">${u.s.label}</span>
+            <button class="icon-btn subtle job-edit" onClick=${() => setEditing(u)} aria-label=${`Edit or delete ${u.name}`}><${Icon} name="edit" size=${20} /></button>
           </div>
           <div class="gauge" role="meter" aria-label=${`${u.name}: ${Math.round(u.s.used * 100)}% of the interval used`} aria-valuemin="0" aria-valuemax="100" aria-valuenow=${Math.round(u.s.used * 100)}>
             ${Array.from({ length: SEGMENTS }, (_, i) => html`<i class=${i < lit ? 'lit' : ''}></i>`)}
@@ -74,12 +76,18 @@ export function Upkeep({ st, hid, me, members, upkeep }) {
       </div>`}
 
     ${editing && html`<${JobSheet} job=${editing} onClose=${() => setEditing(null)}
-      onDelete=${editing.id && (async () => { if (confirm(`Delete ${editing.name}?`)) { await st.remove(hid, 'upkeep', editing.id); setEditing(null); } })}
+      onDelete=${editing.id && (async () => {
+        if (!confirm(`Delete ${editing.name}? This can't be undone.`)) return;
+        try { await st.remove(hid, 'upkeep', editing.id); setEditing(null); toast(`Deleted ${editing.name}`); }
+        catch (e) { console.error(e); toast(`Couldn't delete the job: ${e.message}`); }
+      })}
       onSave=${async (j) => {
         const { id, s, ...data } = j;
-        if (id) await st.update(hid, 'upkeep', id, data); else await st.add(hid, 'upkeep', data);
-        setEditing(null);
-        toast(id ? 'Job saved' : 'Job added');
+        try {
+          if (id) await st.update(hid, 'upkeep', id, data); else await st.add(hid, 'upkeep', data);
+          setEditing(null);
+          toast(id ? 'Job saved' : 'Job added');
+        } catch (e) { console.error(e); toast(`Couldn't save the job: ${e.message}`); }
       }} />`}`;
 }
 
