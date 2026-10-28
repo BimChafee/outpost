@@ -1,4 +1,4 @@
-"""Nightly reminders for the Temporary Mining Outpost.
+"""Nightly reminders for the Temporary Mining Outpost (bins, rent, house events, upkeep).
 
 Runs on GitHub Actions in the evening (America/Toronto). It:
   1. Fetches the live Peel collection calendar for 582 Rapids Lane from ReCollect
@@ -113,6 +113,58 @@ def upkeep_messages(jobs: list[dict], today: dt.date) -> list[str]:
     return out
 
 
+
+# ---------------- calendar + rent ----------------
+def occurs_on(ev: dict, day: dt.date) -> bool:
+    """Whether a calendar event (see app/js/calendar-model.js) starts on `day`."""
+    try:
+        start = dt.date.fromisoformat(ev.get("date") or "")
+    except ValueError:
+        return False
+    if day < start or day.isoformat() in (ev.get("skip") or []):
+        return False
+    until = ev.get("until") or ""
+    if until and day.isoformat() > until:
+        return False
+    rep = ev.get("repeat") or "none"
+    if rep == "none":
+        return day == start
+    if rep == "daily":
+        return True
+    if rep in ("weekly", "biweekly"):
+        step = 7 if rep == "weekly" else 14
+        return (day - start).days % step == 0
+    if rep == "monthly":
+        return day.day == start.day
+    return False
+
+
+def fmt_time(hhmm: str) -> str:
+    if not hhmm:
+        return ""
+    h, m = (int(x) for x in hhmm.split(":"))
+    return f"{h % 12 or 12}{':%02d' % m if m else ''} {'a.m.' if h < 12 else 'p.m.'}"
+
+
+def house_event_messages(events: list[dict], tomorrow: dt.date) -> list[str]:
+    out = []
+    for ev in sorted(events, key=lambda e: (not e.get("allDay"), e.get("start") or "")):
+        if ev.get("owner") != "house" or not occurs_on(ev, tomorrow):
+            continue
+        when = "all day" if ev.get("allDay") else f"at {fmt_time(ev.get('start', ''))}"
+        line = f"Tomorrow: {ev.get('title', 'House event')} {when}"
+        out.append(line if line.endswith('.') else line + '.')
+    return out
+
+
+def rent_message(household: dict, tomorrow: dt.date) -> str | None:
+    rent = household.get("rent") or {}
+    amount = rent.get("amount", 5000)
+    due_day = int(rent.get("dueDay", 1))
+    if tomorrow.day != due_day:
+        return None
+    return f"Rent (${amount:,.0f}) is due tomorrow." if float(amount).is_integer() else f"Rent (${amount:,.2f}) is due tomorrow."
+
 # ---------------- delivery ----------------
 def send_ntfy(topic: str, title: str, body: str, url: str | None):
     if DRY:
@@ -203,7 +255,17 @@ def main() -> int:
         names = ", ".join(LABELS[s] for s in streams)
         lines.append(f"Tomorrow: {names}. Out by 7 a.m.{' (estimated date)' if estimated else ''}")
     if db is not None:
-        jobs = [d.to_dict() for d in db.collection("households").document(hid).collection("upkeep").stream()]
+        home_ref = db.collection("households").document(hid)
+        rent = rent_message(home_ref.get().to_dict() or {}, tomorrow)
+        if rent:
+            title = title or "Rent due tomorrow"
+            lines.append(rent)
+        events = [d.to_dict() for d in home_ref.collection("events").stream()]
+        house = house_event_messages(events, tomorrow)
+        if house:
+            title = title or "Tomorrow at the house"
+            lines += house
+        jobs = [d.to_dict() for d in home_ref.collection("upkeep").stream()]
         ups = upkeep_messages(jobs, today)
         if ups:
             title = title or "House upkeep"

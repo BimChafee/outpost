@@ -2,6 +2,8 @@ import { html, useMemo, nameOf, Sign, Cart, Icon } from '../ui.js';
 import { upcomingPickups, whenLabel, STREAMS, parseDay } from '../schedule.js';
 import { balances, settleUp, fmt } from '../money.js';
 import { upkeepStatus } from './upkeep.js';
+import { HousePlate } from './house.js';
+import { TodayCard } from './today.js';
 
 const listNames = (keys) => {
   const n = keys.map((k) => STREAMS[k].label.toLowerCase());
@@ -45,7 +47,8 @@ function CurbBoard({ pickups }) {
     </section>`;
 }
 
-export function Home({ bundledSchedule, liveSchedule, upkeep, ledger, groceries, members, me }) {
+export function Home(props) {
+  const { bundledSchedule, liveSchedule, upkeep, ledger, groceries, members, me, household } = props;
   const pickups = useMemo(() => upcomingPickups(bundledSchedule, liveSchedule, new Date(), 5), [bundledSchedule, liveSchedule]);
   const bal = useMemo(() => balances(ledger, members.map((m) => m.id)), [ledger, members]);
   const transfers = settleUp(bal);
@@ -66,6 +69,7 @@ export function Home({ bundledSchedule, liveSchedule, upkeep, ledger, groceries,
   const mineNet = bal[me] || 0;
 
   return html`
+    <${HousePlate} household=${household} />
     <${CurbBoard} pickups=${pickups} />
 
     <section class="block" aria-labelledby="needs-h">
@@ -79,6 +83,8 @@ export function Home({ bundledSchedule, liveSchedule, upkeep, ledger, groceries,
           </a></li>`)}
         </ul>`}
     </section>
+
+    <${TodayCard} ...${props} />
 
     <section class="block" aria-labelledby="house-h">
       <h2 id="house-h" class="block-title">Around the house</h2>

@@ -19,4 +19,8 @@ self.OUTPOST_CONFIG = {
   // Collection address, shown in the app. The schedule itself comes from data/schedule.json
   // (bundled) and is refreshed nightly by notifier/notify.py when Firebase is configured.
   address: "582 Rapids Lane, Mississauga",
+  postalCode: "L5G 0A9",
+
+  // Starting values; anyone can change them later in Settings > Rent and address.
+  rent: { amount: 5000, dueDay: 1 },
 };

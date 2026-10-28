@@ -1,7 +1,8 @@
 import { html, useMemo, useState, Icon, Chip, Sheet, Sign, nameOf, shortDate, today, toast } from '../ui.js';
 import { balances, settleUp, billShares, billTotal, fmt, toCents } from '../money.js';
+import { HousePlate } from './house.js';
 
-export function Ledger({ st, hid, me, members, ledger, go, openCamera }) {
+export function Ledger({ st, hid, me, members, ledger, go, openCamera, household }) {
   const ids = members.map((m) => m.id);
   const bal = useMemo(() => balances(ledger, ids), [ledger, members]);
   const transfers = settleUp(bal).sort((a, b) => (b.from === me) - (a.from === me) || (b.to === me) - (a.to === me));
@@ -24,6 +25,8 @@ export function Ledger({ st, hid, me, members, ledger, go, openCamera }) {
   return html`
     <div class="page-head"><h1 class="page-title">Bills</h1>
       <p class="page-sub">${bills.length ? `${bills.length} bill${bills.length === 1 ? '' : 's'}, ${fmt(grand)} in total` : 'Nothing logged yet'}</p></div>
+
+    <${HousePlate} household=${household} compact />
 
     <div class="actions">
       <button class="btn primary" onClick=${() => openCamera()}><${Icon} name="camera" /> Scan a receipt</button>

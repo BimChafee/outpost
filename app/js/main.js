@@ -9,13 +9,14 @@ import { Upkeep } from './views/upkeep.js';
 import { Settings } from './views/settings.js';
 import { Setup } from './views/setup.js';
 import { ReceiptCamera } from './views/camera.js';
+import { Calendar } from './views/calendar.js';
 
 const TABS = [
   { id: 'home', label: 'Home', icon: 'home' },
   { id: 'groceries', label: 'Groceries', icon: 'cart' },
   { id: 'scan' },
   { id: 'ledger', label: 'Bills', icon: 'ledger' },
-  { id: 'upkeep', label: 'Upkeep', icon: 'wrench' },
+  { id: 'calendar', label: 'Calendar', icon: 'calendar' },
 ];
 
 const readRoute = () => {
@@ -36,7 +37,7 @@ function useRoute() {
 
 /** Subscribes to the whole household. Small data set, so everything is kept live in memory. */
 function useHousehold(st, hid) {
-  const [state, set] = useState({ household: undefined, groceries: [], ledger: [], upkeep: [], tags: [], liveSchedule: null });
+  const [state, set] = useState({ household: undefined, groceries: [], ledger: [], upkeep: [], tags: [], events: [], liveSchedule: null });
   useEffect(() => {
     if (!hid) return;
     const patch = (k) => (v) => set((s) => ({ ...s, [k]: v }));
@@ -46,6 +47,7 @@ function useHousehold(st, hid) {
       st.watch(hid, 'ledger', patch('ledger')),
       st.watch(hid, 'upkeep', patch('upkeep')),
       st.watch(hid, 'tags', patch('tags')),
+      st.watch(hid, 'events', patch('events')),
       st.watchMeta(hid, 'schedule', patch('liveSchedule')),
     ];
     return () => offs.forEach((off) => off && off());
@@ -109,6 +111,7 @@ function App({ st, bundledSchedule }) {
   else if (tab === 'ledger') view = html`<${Ledger} ...${ctx} />`;
   else if (tab === 'bill') view = html`<${BillEditor} key=${arg} ...${ctx} billId=${arg} />`;
   else if (tab === 'upkeep') view = html`<${Upkeep} ...${ctx} />`;
+  else if (tab === 'calendar') view = html`<${Calendar} ...${ctx} />`;
   else if (tab === 'settings') view = html`<${Settings} ...${ctx} onLeave=${leave} onSwitchMe=${(m) => { session.me = m; setMe(m); }} />`;
   else view = html`<${Home} ...${ctx} />`;
 

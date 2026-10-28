@@ -9,7 +9,7 @@ app/                 the app (static files, no build step) - this folder is what
   config.js          Firebase + Web Push settings  <- you edit this
   data/schedule.json Peel collection calendar for 582 Rapids Lane (bundled fallback)
   tests.html         open in a browser to run the logic tests
-notifier/notify.py   nightly job: fetches Peel's live calendar, sends bin-night + upkeep pushes
+notifier/notify.py   nightly job: Peel's live calendar; pushes for bin night, rent, house events, upkeep
 .github/workflows/   pages.yml (hosting) and notify.yml (nightly reminders)
 firestore.rules      database security rules
 ```
@@ -20,6 +20,8 @@ firestore.rules      database security rules
 - **Bills.** A spreadsheet of every bill: one column per roommate, plus balances and the fewest e-Transfers needed to settle up. A bill splits evenly, by shares (e.g. 1.5 shares of rent for the big room), or by item. By item, you tap squares to put each item on one or more people. Tax, tip and discounts are spread in proportion to what each person bought.
 - **Receipt scanning.** Tap the big Scan button. The app opens its own camera, so Android can't unload it mid-scan; take several photos for a long receipt, or pick one from the gallery. It finds the store, date, items, tax and total, then checks the items add up to the receipt's subtotal and tells you if they don't. By default it reads on the phone (free; the first scan downloads the reader, ~20 s). Paste an Anthropic API key in Settings and Claude reads it instead, which is more accurate on long or crumpled receipts. Each scan costs a few cents, and the key stays on that phone.
 - **Upkeep.** Repeating jobs with a timer: furnace air filter every 90 days, plus suggestions like the smoke alarm test and fridge water filter. Tap "Done today" to restart the timer. Reminders go out the night before a job is due, and every third day while it's overdue.
+- **Calendar.** A shared calendar laid out like a crew roster: days across, one lane per roommate, and a House lane in hazard tape for parties, guests, contractor visits and house meetings. Bin days, rent and upkeep due dates appear in the House lane on their own. Tap names to show or hide schedules (or *Just me*). Events can be work or class, away, plans, appointments or quiet-please; they can repeat (daily, weekly, every 2 weeks, monthly) and you can skip one date. Overnight shifts and multi-day trips are drawn as one bar. House events have RSVP, and the day view says who's home tonight. Week, Month and List views; swipe the board to change weeks. Home shows *Today*, and the nightly reminder includes tomorrow's house events.
+- **Rent and address.** Home and Bills always show the house plate: 582 Rapids Lane, L5G 0A9, and rent (,000 on the 1st) with a countdown. The nightly reminder says when rent is due tomorrow. Change the amount, due day or postal code in Settings.
 - **Bins.** The home screen shows the next collection and the four after it. Each evening the notifier pushes "Bins out tonight" if tomorrow is collection day.
 
 ### About the garbage schedule

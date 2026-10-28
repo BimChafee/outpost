@@ -9,6 +9,8 @@
 import { splitCents, billShares, billTotal, balances, settleUp } from './js/money.js';
 import { upcomingPickups } from './js/schedule.js';
 import { parseReceiptText, reconcile } from './js/receipt.js';
+import { dayTimeLabel, occurrences, packLane, weekStart, weekDays, monthGrid, awayOn, normaliseEvent, fmtTime, fmtTimeShort } from './js/calendar-model.js';
+import { rentInfo } from './js/views/house.js';
 import { statusOf, applyView, sectionize, orderAfterMove, bumpQty, statusPatch, parseEntry, HISTORY_DAYS } from './js/grocery-model.js';
 
 const out = document.getElementById('out');
@@ -116,6 +118,44 @@ const hp = statusPatch('history', 'm1', 1000);
 eq('history purges after 60 days', [hp.status, hp.checkedBy, hp.purgeAt], ['history', 'm1', 1000 + HISTORY_DAYS * 86400000]);
 eq('back to active clears checkoff', statusPatch('active', 'm1'), { status: 'active', done: false, checkedBy: null, checkedAt: null, purgeAt: null });
 eq('quick-add parsing', [parseEntry('2 milk'), parseEntry('eggs x12'), parseEntry('bread')], [{ name: 'Milk', qty: '2' }, { name: 'Eggs', qty: '12' }, { name: 'Bread', qty: '' }]);
+
+
+// calendar
+eq('week starts Monday', [weekStart('2026-10-28'), weekStart('2026-11-01'), weekStart('2026-11-02')], ['2026-10-26', '2026-10-26', '2026-11-02']);
+eq('month grid is whole weeks', [monthGrid('2026-11-15')[0], monthGrid('2026-11-15').length], ['2026-10-26', 42]);
+const E = [
+  { id: 'shift', title: 'Shift', owner: 'm1', kind: 'work', date: '2026-10-05', endDate: '2026-10-05', start: '09:00', end: '17:00', repeat: 'weekly', skip: ['2026-11-02'] },
+  { id: 'trip', title: 'Montreal', owner: 'm2', kind: 'away', date: '2026-11-05', endDate: '2026-11-09', allDay: true, repeat: 'none' },
+  { id: 'night', title: 'Night shift', owner: 'm3', kind: 'work', date: '2026-11-03', endDate: '2026-11-04', start: '22:00', end: '06:00', repeat: 'none' },
+  { id: 'rent31', title: 'Pay', owner: 'm1', kind: 'appt', date: '2026-08-31', endDate: '2026-08-31', start: '09:00', repeat: 'monthly' },
+  { id: 'gym', title: 'Gym', owner: 'm1', kind: 'plans', date: '2026-11-01', endDate: '2026-11-01', start: '07:00', repeat: 'daily', until: '2026-11-03' },
+];
+const wk = weekDays('2026-11-02');
+const occ = occurrences(E, wk[0], wk[6]);
+eq('weekly repeat lands on Mondays, skipped date left out', occ.filter((o) => o.ev.id === 'shift').map((o) => o.date), []);
+eq('weekly repeat next week', occurrences(E, '2026-11-09', '2026-11-15').filter((o) => o.ev.id === 'shift').map((o) => o.date), ['2026-11-09']);
+eq('multi-day trip overlaps week', occ.filter((o) => o.ev.id === 'trip').map((o) => [o.date, o.endDate]), [['2026-11-05', '2026-11-09']]);
+eq('daily repeat stops at until', occ.filter((o) => o.ev.id === 'gym').map((o) => o.date), ['2026-11-02', '2026-11-03']);
+eq('monthly on the 31st skips short months', occurrences(E, '2026-09-01', '2026-12-31').filter((o) => o.ev.id === 'rent31').map((o) => o.date), ['2026-10-31', '2026-12-31']);
+eq('overnight shift shows on both days', ['2026-11-03', '2026-11-04'].map((d) => occ.filter((o) => o.ev.id === 'night' && o.date <= d && o.endDate >= d).length), [1, 1]);
+const lane = packLane(occ.filter((o) => o.ev.owner === 'm2'), wk);
+eq('trip clipped to the week, spans Thu-Sun', lane.items.map((s) => [s.col, s.span, s.clipStart, s.clipEnd]), [[3, 4, false, true]]);
+const p2 = packLane(occurrences([
+  { id: 'a', title: 'A', owner: 'x', date: '2026-11-02', endDate: '2026-11-04', allDay: true },
+  { id: 'b', title: 'B', owner: 'x', date: '2026-11-03', endDate: '2026-11-03', start: '10:00' },
+  { id: 'c', title: 'C', owner: 'x', date: '2026-11-05', endDate: '2026-11-05', start: '10:00' },
+], wk[0], wk[6]), wk);
+eq('overlaps stack into rows, free space reused', p2.items.map((s) => [s.o.ev.id, s.row]), [['a', 0], ['b', 1], ['c', 0]]);
+eq('rows needed', p2.rows, 2);
+eq('overnight shift label on each day', ['2026-11-03','2026-11-04'].map((d) => dayTimeLabel(occ.find((o) => o.ev.id === 'night'), d)), ['10p', 'til 6a']);
+eq('who is away', awayOn(occ, '2026-11-07'), ['m2']);
+eq('time formats', [fmtTime('09:00'), fmtTime('17:30'), fmtTime('00:15'), fmtTimeShort('13:00')], ['9 a.m.', '5:30 p.m.', '12:15 a.m.', '1p']);
+eq('end before start is rejected', normaliseEvent({ title: 'x', date: '2026-11-02', endDate: '2026-11-02', start: '22:00', end: '06:00', owner: 'm1', kind: 'work' }).ok, false);
+eq('overnight with next-day end is fine', normaliseEvent({ title: 'x', date: '2026-11-02', endDate: '2026-11-03', start: '22:00', end: '06:00', owner: 'm1', kind: 'work' }).ok, true);
+eq('all-day clears times', normaliseEvent({ title: 'x', date: '2026-11-02', allDay: true, start: '10:00', owner: 'house', kind: 'party' }).doc.start, '');
+const r1 = rentInfo({ rent: { amount: 5000, dueDay: 1 } }, new Date(2026, 9, 28, 10));
+eq('rent due on the 1st', [r1.next, r1.daysLeft, r1.label, r1.amountText], ['2026-11-01', 4, 'Due in 4 days', '$5,000']);
+eq('rent due today on the 1st', rentInfo({ rent: { amount: 5000, dueDay: 1 } }, new Date(2026, 10, 1, 10)).label, 'Due today');
 
 out.insertAdjacentHTML('afterbegin', `<b id="summary">${fail ? 'FAILED' : 'ALL PASSED'}: ${pass} passed, ${fail} failed</b>\n\n`);
 </script>

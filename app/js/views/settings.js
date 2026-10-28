@@ -2,6 +2,7 @@ import { html, useState, Icon, Chip, MEMBER_COLORS, toast } from '../ui.js';
 import { newId } from '../store.js';
 import { enablePush, pushAvailable, pushPermission } from '../push.js';
 import { CLAUDE_KEY } from './bill.js';
+import { HouseDetails } from './house.js';
 
 export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe }) {
   const [newName, setNewName] = useState('');
@@ -61,6 +62,8 @@ export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe 
         <button class="btn" aria-label="Add roommate"><${Icon} name="plus" /></button>
       </form>
     </section>
+
+    <${HouseDetails} st=${st} hid=${hid} household=${household} />
 
     <section class="block">
       <h2>Invite roommates</h2>
