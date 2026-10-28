@@ -14,7 +14,7 @@ self.OUTPOST_CONFIG = {
 
   // Web Push certificate key pair (Firebase console > Project settings > Cloud Messaging > Web Push certificates).
   // Needed for bin-night and upkeep notifications sent by the nightly GitHub Action.
-  vapidKey: null,
+  vapidKey: "BAGDmXO2ARkH6-qRN0iCjUEITlg1azHY-t7danZS0CAFmlzP2IqTLQ0Ajpuu59rLONoteDqG7kgKDCV67WSt1vE",
 
   // Collection address, shown in the app. The schedule itself comes from data/schedule.json
   // (bundled) and is refreshed nightly by notifier/notify.py when Firebase is configured.
