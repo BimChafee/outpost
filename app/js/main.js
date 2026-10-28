@@ -1,8 +1,8 @@
-import { html, render, useEffect, useState, Icon, Toasts, toast } from './ui.js';
+import { html, render, useEffect, useRef, useState, Icon, Toasts, toast } from './ui.js';
 import { openStore, session } from './store.js';
 import { listenForeground } from './push.js';
 import { Home } from './views/home.js';
-import { Groceries } from './views/groceries.js';
+import { Groceries, History } from './views/groceries.js';
 import { Ledger } from './views/ledger.js';
 import { BillEditor, queueScan } from './views/bill.js';
 import { Upkeep } from './views/upkeep.js';
@@ -36,7 +36,7 @@ function useRoute() {
 
 /** Subscribes to the whole household. Small data set, so everything is kept live in memory. */
 function useHousehold(st, hid) {
-  const [state, set] = useState({ household: undefined, groceries: [], ledger: [], upkeep: [], liveSchedule: null });
+  const [state, set] = useState({ household: undefined, groceries: [], ledger: [], upkeep: [], tags: [], liveSchedule: null });
   useEffect(() => {
     if (!hid) return;
     const patch = (k) => (v) => set((s) => ({ ...s, [k]: v }));
@@ -45,6 +45,7 @@ function useHousehold(st, hid) {
       st.watch(hid, 'groceries', patch('groceries')),
       st.watch(hid, 'ledger', patch('ledger')),
       st.watch(hid, 'upkeep', patch('upkeep')),
+      st.watch(hid, 'tags', patch('tags')),
       st.watchMeta(hid, 'schedule', patch('liveSchedule')),
     ];
     return () => offs.forEach((off) => off && off());
@@ -64,6 +65,21 @@ function App({ st, bundledSchedule }) {
   useEffect(() => {
     if (route.tab === 'scan' && data.household) { go('ledger'); setCamera({ onDone: (photos) => { queueScan(photos); go('bill/new'); } }); }
   }, [route.tab, !!data.household]);
+
+  // "Tell the others": a heads-up while the app is open when a roommate adds a flagged item.
+  const seen = useRef(null);
+  useEffect(() => {
+    const ids = new Set(data.groceries.map((g) => g.id));
+    if (seen.current) {
+      for (const g of data.groceries) {
+        if (!seen.current.has(g.id) && g.notify && g.addedBy !== me && (g.status || 'active') === 'active') {
+          const who = (data.household?.members || []).find((m) => m.id === g.addedBy)?.name || 'Someone';
+          toast(`${who} added ${g.name} to groceries`);
+        }
+      }
+    }
+    if (data.household !== undefined) seen.current = ids;
+  }, [data.groceries]);
 
   const leave = () => { session.hid = null; session.me = null; setHid(null); setMe(null); go('home'); };
 
@@ -88,7 +104,8 @@ function App({ st, bundledSchedule }) {
   const ctx = { st, hid, me, members, household: data.household, ...data, bundledSchedule, go, openCamera };
   const { tab, arg } = route;
   let view;
-  if (tab === 'groceries') view = html`<${Groceries} ...${ctx} />`;
+  if (tab === 'groceries' && arg === 'history') view = html`<${History} ...${ctx} />`;
+  else if (tab === 'groceries') view = html`<${Groceries} ...${ctx} />`;
   else if (tab === 'ledger') view = html`<${Ledger} ...${ctx} />`;
   else if (tab === 'bill') view = html`<${BillEditor} key=${arg} ...${ctx} billId=${arg} />`;
   else if (tab === 'upkeep') view = html`<${Upkeep} ...${ctx} />`;

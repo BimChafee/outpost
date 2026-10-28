@@ -9,6 +9,7 @@
 import { splitCents, billShares, billTotal, balances, settleUp } from './js/money.js';
 import { upcomingPickups } from './js/schedule.js';
 import { parseReceiptText, reconcile } from './js/receipt.js';
+import { statusOf, applyView, sectionize, orderAfterMove, bumpQty, statusPatch, parseEntry, HISTORY_DAYS } from './js/grocery-model.js';
 
 const out = document.getElementById('out');
 let pass = 0, fail = 0;
@@ -88,6 +89,33 @@ const trailingMinus = parseReceiptText(`STORE CARD SAVINGS DISC 2.00-
 STEAK 10.00
 TOTAL 8.00`);
 eq('trailing minus discount', trailingMinus.items.map((i) => i.price), [-2, 10]);
+
+
+// groceries
+eq('legacy done=true is "later"', [statusOf({ done: true }), statusOf({}), statusOf({ status: 'history', done: true })], ['later', 'active', 'history']);
+const G = [
+  { id: 'a', name: 'Milk', notes: 'oat', categoryIds: ['dairy'], storeIds: ['nf'], forIds: ['m1'], sortOrder: 3000, createdAt: 1 },
+  { id: 'b', name: 'apples', categoryIds: ['produce'], storeIds: ['nf', 'cc'], forIds: [], sortOrder: 1000, createdAt: 3 },
+  { id: 'c', name: 'Bleach', categoryIds: [], storeIds: ['cc'], forIds: ['m2'], sortOrder: 2000, createdAt: 2 },
+];
+eq('manual order', applyView(G, { sort: 'manual' }).map((g) => g.id), ['b', 'c', 'a']);
+eq('name order ignores case', applyView(G, { sort: 'name' }).map((g) => g.id), ['b', 'c', 'a']);
+eq('recent first', applyView(G, { sort: 'recent' }).map((g) => g.id), ['b', 'c', 'a']);
+eq('filter by store (any of)', applyView(G, { sort: 'manual', filters: { store: ['cc'] } }).map((g) => g.id), ['b', 'c']);
+eq('filters combine across kinds', applyView(G, { sort: 'manual', filters: { store: ['nf'], category: ['dairy'] } }).map((g) => g.id), ['a']);
+eq('search matches notes', applyView(G, { sort: 'manual', search: 'OAT' }).map((g) => g.id), ['a']);
+const secs = sectionize(applyView(G, { sort: 'manual' }), 'store', [{ id: 'cc', name: 'Costco' }, { id: 'nf', name: 'No Frills' }]);
+eq('multi-store item repeats under each store', secs.map((x) => [x.title, x.items.map((g) => g.id)]), [['Costco', ['b', 'c']], ['No Frills', ['b', 'a']]]);
+eq('untagged go to Everything else', sectionize(G, 'category', [{ id: 'dairy', name: 'Dairy' }]).map((x) => x.title), ['Dairy', 'Everything else']);
+const ordered = applyView(G, { sort: 'manual' });
+eq('drop between two items takes the midpoint', orderAfterMove(ordered, 2, 1), 1500);
+eq('drop at top goes before the first', orderAfterMove(ordered, 2, 0), 0);
+eq('drop at bottom goes after the last', orderAfterMove(ordered, 0, 2), 4000);
+eq('bump quantity', [bumpQty('2', '3'), bumpQty('2 dozen', ''), bumpQty('', ''), bumpQty('a bag', '2')], ['5', '3 dozen', '2', 'a bag + 2']);
+const hp = statusPatch('history', 'm1', 1000);
+eq('history purges after 60 days', [hp.status, hp.checkedBy, hp.purgeAt], ['history', 'm1', 1000 + HISTORY_DAYS * 86400000]);
+eq('back to active clears checkoff', statusPatch('active', 'm1'), { status: 'active', done: false, checkedBy: null, checkedAt: null, purgeAt: null });
+eq('quick-add parsing', [parseEntry('2 milk'), parseEntry('eggs x12'), parseEntry('bread')], [{ name: 'Milk', qty: '2' }, { name: 'Eggs', qty: '12' }, { name: 'Bread', qty: '' }]);
 
 out.insertAdjacentHTML('afterbegin', `<b id="summary">${fail ? 'FAILED' : 'ALL PASSED'}: ${pass} passed, ${fail} failed</b>\n\n`);
 </script>

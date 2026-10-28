@@ -49,7 +49,7 @@ export function Home({ bundledSchedule, liveSchedule, upkeep, ledger, groceries,
   const pickups = useMemo(() => upcomingPickups(bundledSchedule, liveSchedule, new Date(), 5), [bundledSchedule, liveSchedule]);
   const bal = useMemo(() => balances(ledger, members.map((m) => m.id)), [ledger, members]);
   const transfers = settleUp(bal);
-  const open = groceries.filter((g) => !g.done);
+  const open = groceries.filter((g) => (g.status || (g.done ? 'later' : 'active')) === 'active');
   const jobs = upkeep.map((u) => ({ ...u, s: upkeepStatus(u) })).sort((a, b) => a.s.daysLeft - b.s.daysLeft);
 
   const needs = [];
