@@ -12,7 +12,7 @@ export function LookSettings() {
       ${SKINS.map((s) => html`<button role="radio" aria-checked=${String(look.skin === s.id)} class=${`skin-card skin-${s.id} ${look.skin === s.id ? 'on' : ''}`} onClick=${() => pick({ skin: s.id })}>
         <span class="skin-preview" aria-hidden="true">
           <span class="sp-bar"></span>
-          <span class="sp-title">${s.id === 'cyber' ? 'OUTPOST_' : 'Outpost'}</span>
+          <span class="sp-title">${{ cyber: 'OUTPOST_', osrs: 'Outpost', wotlk: 'Outpost', persona: 'OUTPOST', moonring: 'OUTPOST' }[s.id] || 'Outpost'}</span>
           <span class="sp-row"><i></i><i></i></span>
           <span class="sp-btn"></span>
           <span class="sp-swatches">${s.swatch.map((c) => html`<i style=${{ background: c }}></i>`)}</span>

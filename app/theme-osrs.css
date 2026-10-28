@@ -1,0 +1,180 @@
+/* Old School RuneScape skin: bevelled brown stone interface, parchment chatbox, yellow/orange pixel text
+   with the 1px black drop shadow on everything. Meaning stays the same:
+   yellow = do this, orange = coming up, green = all good, red = money you owe. */
+
+/* Pixelify's 5 reads as an S or 8, so digits come from VT323 (a pixel font with clear numerals). */
+@font-face {
+  font-family: "OSRS Digits"; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url(https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJU.woff2) format("woff2");
+  unicode-range: U+0030-0039; size-adjust: 128%;
+}
+
+:root[data-skin="osrs"] {
+  --ground: #2B241C;
+  --surface: #4A3F31;
+  --sunken: #3A3126;
+  --ink: #F2E7C9;
+  --ink-2: #FF981F;
+  --ink-3: #BCA680;
+  --rule: #1E1912;
+  --rule-strong: #74634B;
+  --mandatory: #FFFF00;
+  --mandatory-ink: #000000;
+  --mandatory-soft: #4D4A14;
+  --warning: #FF981F;
+  --warning-ink: #000000;
+  --warning-soft: #4A3417;
+  --warning-text: #FFB347;
+  --safe: #00FF00;
+  --safe-ink: #000000;
+  --safe-soft: #233A17;
+  --owe: #FF3030;
+  --owe-ink: #000000;
+  --owe-soft: #4A1E17;
+
+  --board: #3A3126;
+  --board-2: #2B241C;
+  --board-ink: #F2E7C9;
+  --board-ink-2: #FF981F;
+  --asphalt: #5B4E3C;
+
+  --hazard-a: #FFFF00;
+  --hazard-b: #000000;
+  --plate-bg: #6B4A2B;
+
+  --display: "OSRS Digits", "Pixelify Sans", "Courier New", monospace;
+  --body: "OSRS Digits", "Pixelify Sans", "Courier New", monospace;
+  --r-s: 0px;
+  --r-m: 0px;
+  --r-l: 0px;
+  --bevel: inset 1px 1px 0 #74634B, inset -1px -1px 0 #16120D;
+  color-scheme: dark;
+}
+
+[data-skin="osrs"] body {
+  font-size: 19px; text-shadow: 1px 1px 0 #000;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.035) 0 2px, transparent 3px) 0 0 / 23px 19px,
+    radial-gradient(circle at 70% 60%, rgba(0,0,0,.25) 0 3px, transparent 4px) 0 0 / 31px 27px,
+    linear-gradient(135deg, #3A3026 0%, #2B241C 40%, #332A20 100%);
+  background-color: #2B241C;
+}
+[data-skin="osrs"] :focus-visible { outline: 2px solid #FFFF00; outline-offset: 1px; }
+[data-skin="osrs"] a { color: #00FFFF; }
+[data-skin="osrs"] h1, [data-skin="osrs"] h2, [data-skin="osrs"] h3 { color: #FFFF00; font-weight: 600; letter-spacing: 0; }
+[data-skin="osrs"] .page-title { font-size: 2.3rem; color: #FF981F; }
+[data-skin="osrs"] .block-title, [data-skin="osrs"] .block h2, [data-skin="osrs"] .step-title { color: #FF981F; font-size: 1.3rem; }
+[data-skin="osrs"] .money { color: #FFFF00; font-weight: 600; }
+[data-skin="osrs"] .pos, [data-skin="osrs"] .bal-amt.pos .money { color: #00FF00; }
+[data-skin="osrs"] .neg, [data-skin="osrs"] .bal-amt.neg .money { color: #FF3030; }
+[data-skin="osrs"] .page-sub, [data-skin="osrs"] .hint, [data-skin="osrs"] .lede { color: #BCA680; }
+
+/* ---------- stone panels ---------- */
+[data-skin="osrs"] :is(.sign-row, .glist, .rows, .house, .job, .evlist, .balances, .result, .sheet-scroll, .roster, .month, .today, .evfacts, .scan, .empty, .plate-rent, .curb, .skin-card) {
+  border-radius: 0; background: #4A3F31; border: 2px solid #1E1912; box-shadow: var(--bevel);
+}
+[data-skin="osrs"] .sign-row.calm { background: #33401F; }
+[data-skin="osrs"] .sign-row.alert { background: #4E3A1B; }
+[data-skin="osrs"] .sign-row b { color: #FFFF00; }
+[data-skin="osrs"] .sign-row span { color: #FF981F; }
+[data-skin="osrs"] .sign-warning .sign-shape { stroke: #000; }
+[data-skin="osrs"] .empty { border-style: solid; }
+
+/* ---------- frame ---------- */
+[data-skin="osrs"] .topbar { background: #3A3126; border-bottom: 2px solid #1E1912; box-shadow: inset 0 -1px 0 #74634B; backdrop-filter: none; }
+[data-skin="osrs"] .brand-name { color: #FFFF00; font-weight: 600; }
+[data-skin="osrs"] .me-btn { border-radius: 0; background: #4A3F31; border: 2px solid #1E1912; box-shadow: var(--bevel); color: #FF981F; }
+[data-skin="osrs"] .local-banner { border-radius: 0; background: #D8CCB4; color: #800000; text-shadow: none; border: 2px solid #1E1912; }
+[data-skin="osrs"] .tabbar { background: #3A3126; border-top: 2px solid #1E1912; box-shadow: inset 0 1px 0 #74634B; }
+[data-skin="osrs"] .tab { color: #BCA680; margin: 5px 2px; border: 2px solid #1E1912; box-shadow: var(--bevel); background: #4A3F31; font-size: .7rem; gap: 1px; }
+[data-skin="osrs"] .tab.on { background: #6E2B1B; color: #FFFF00; }
+[data-skin="osrs"] .tab.on::after { display: none; }
+[data-skin="osrs"] .tab.on span { margin-bottom: 0; }
+/* the scan button is a minimap orb */
+[data-skin="osrs"] .tab-scan-disc {
+  background: radial-gradient(circle at 40% 35%, #7DFF6B, #1E8A1E 55%, #0B3D0B);
+  color: #000; border: 3px solid #1E1912; box-shadow: 0 0 0 3px #74634B, 0 0 0 5px #1E1912; text-shadow: none;
+}
+[data-skin="osrs"] .tab-scan-label { color: #FFFF00; }
+
+/* ---------- buttons ---------- */
+[data-skin="osrs"] .btn {
+  border-radius: 0; background: #5D5141; color: #FF981F; border: 2px solid #1E1912; box-shadow: var(--bevel);
+  font-weight: 600;
+}
+[data-skin="osrs"] .btn:active:not(:disabled) { box-shadow: inset -1px -1px 0 #74634B, inset 1px 1px 0 #16120D; transform: none; }
+[data-skin="osrs"] .btn.primary { background: #5D5141; color: #00FF00; }
+[data-skin="osrs"] .btn.danger { color: #FF3030; }
+[data-skin="osrs"] .icon-btn { border-radius: 0; color: #FF981F; }
+[data-skin="osrs"] .icon-btn.tool { border: 2px solid #1E1912; background: #5D5141; box-shadow: var(--bevel); }
+[data-skin="osrs"] .icon-btn.tool.on { background: #6E2B1B; color: #FFFF00; }
+[data-skin="osrs"] .badge { border-radius: 0; background: #FF3030; color: #fff; }
+[data-skin="osrs"] .link { color: #00FFFF; }
+[data-skin="osrs"] .danger-link { color: #FF3030; }
+
+/* ---------- inputs are the parchment chatbox ---------- */
+[data-skin="osrs"] :is(input:not([type="file"]):not([type="checkbox"]), textarea, select) {
+  border-radius: 0; background: #D8CCB4; color: #000; text-shadow: none; border: 2px solid #1E1912;
+  box-shadow: inset 1px 1px 0 #8C7C60;
+}
+[data-skin="osrs"] :is(input, textarea, select):focus { border-color: #000; box-shadow: inset 0 0 0 1px #0000FF; }
+[data-skin="osrs"] input::placeholder, [data-skin="osrs"] textarea::placeholder { color: #6E6045; }
+[data-skin="osrs"] .field > span, [data-skin="osrs"] legend, [data-skin="osrs"] .again-label { color: #FF981F; }
+[data-skin="osrs"] :is(.seg button, .kind-opt, .pill, .chip, .tag, .lane-chip) { border-radius: 0; background: #5D5141; border: 2px solid #1E1912; box-shadow: var(--bevel); color: #FF981F; }
+[data-skin="osrs"] :is(.seg button.on, .kind-opt.on, .pill.choice.on) { background: #6E2B1B; color: #FFFF00; box-shadow: var(--bevel); border-color: #1E1912; }
+[data-skin="osrs"] .chip-on, [data-skin="osrs"] .tag.on, [data-skin="osrs"] .lane-chip.on { background: #6E2B1B; color: #FFFF00; }
+[data-skin="osrs"] .chip-dot, [data-skin="osrs"] .lane-dot, [data-skin="osrs"] .tick-box, [data-skin="osrs"] .cell { border-radius: 0; }
+[data-skin="osrs"] .chip-dot { text-shadow: 1px 1px 0 #000; border: 1px solid #000; }
+[data-skin="osrs"] .switch-row input { border-radius: 0 !important; border: 2px solid #1E1912 !important; }
+[data-skin="osrs"] .switch-row input::after { border-radius: 0; background: #FF981F; top: 1px; left: 1px; }
+[data-skin="osrs"] .switch-row input:checked { background: #1E8A1E !important; }
+[data-skin="osrs"] .gcircle { border-radius: 0; border: 2px solid #1E1912; background: #3A3126; box-shadow: var(--bevel); }
+[data-skin="osrs"] .g-qty { border-radius: 0; background: none; color: #FFFF00; }
+[data-skin="osrs"] .g-qty::before { content: "x"; }
+
+/* ---------- home ---------- */
+[data-skin="osrs"] .plate-sign {
+  border-radius: 0; color: #F2E7C9;
+  background: repeating-linear-gradient(0deg, #6B4A2B 0 9px, #5E4025 9px 11px);
+  box-shadow: inset 0 0 0 2px #2A1A0D, inset 0 0 0 4px #8A6238;
+}
+[data-skin="osrs"] .plate-num { color: #FFFF00; }
+[data-skin="osrs"] .plate-postal { background: #D8CCB4; color: #000; text-shadow: none; border-radius: 0; }
+[data-skin="osrs"] .curb::before, [data-skin="osrs"] .curb::after { display: none; }
+[data-skin="osrs"] .curb-day { color: #FFFF00; }
+[data-skin="osrs"] .curb-day span, [data-skin="osrs"] .curb-kicker { color: #FF981F; }
+[data-skin="osrs"] .curb-alert { text-shadow: none; }
+[data-skin="osrs"] .curb-line { background: #5B4E3C; border-top: 2px solid #1E1912; }
+[data-skin="osrs"] .cw-date { color: #FFFF00; }
+[data-skin="osrs"] .house-icon, [data-skin="osrs"] .evicon { border-radius: 0; background: #3A3126; color: #FF981F; }
+[data-skin="osrs"] .house-num { color: #FFFF00; }
+[data-skin="osrs"] .house-main b, [data-skin="osrs"] .gname, [data-skin="osrs"] .evmain b, [data-skin="osrs"] .today-main b, [data-skin="osrs"] .job-name { color: #FFFF00; }
+[data-skin="osrs"] .house-main span, [data-skin="osrs"] .gnotes, [data-skin="osrs"] .evmain small { color: #FF981F; }
+
+/* ---------- lists, tables, calendar ---------- */
+[data-skin="osrs"] .sheet-table thead th, [data-skin="osrs"] .sheet-table tfoot :is(th, td) { background: #3A3126; color: #FF981F; }
+[data-skin="osrs"] .sheet-table .sticky { background: #4A3F31; }
+[data-skin="osrs"] .t-title { color: #FFFF00; }
+[data-skin="osrs"] td.payer { background: #33401F; }
+[data-skin="osrs"] .bal-track, [data-skin="osrs"] .bal-bar, [data-skin="osrs"] .gauge i { border-radius: 0; }
+[data-skin="osrs"] .gauge i { background: #8C0000; }
+[data-skin="osrs"] .gauge i.lit { background: #00C000; }
+[data-skin="osrs"] .tone-bad .gauge i.lit { background: #FF3030; }
+[data-skin="osrs"] .tone-warn .gauge i.lit { background: #FF981F; }
+[data-skin="osrs"] .step::before { border-radius: 0; background: #6E2B1B; color: #FFFF00; border: 2px solid #1E1912; }
+[data-skin="osrs"] .rday b, [data-skin="osrs"] .mday b { border-radius: 0; }
+[data-skin="osrs"] .rday.today b, [data-skin="osrs"] .mday.today b { background: #6E2B1B; color: #FFFF00; }
+[data-skin="osrs"] .roster-head { background: #3A3126; }
+[data-skin="osrs"] .blk { border-radius: 0; border: 1px solid #000; text-shadow: 1px 1px 0 #000; }
+[data-skin="osrs"] .mday { border-radius: 0; }
+[data-skin="osrs"] .evtime, [data-skin="osrs"] .today-time { color: #00FFFF; }
+[data-skin="osrs"] .whos-home { border-radius: 0; background: #D8CCB4; color: #000; text-shadow: none; }
+
+/* ---------- sheets + toasts ---------- */
+[data-skin="osrs"] .sheet { border-radius: 0; background: #4A3F31; border: 2px solid #1E1912; box-shadow: var(--bevel); }
+[data-skin="osrs"] .sheet-head h2 { color: #FF981F; }
+[data-skin="osrs"] .sheet-grip { border-radius: 0; background: #74634B; }
+/* toasts read like a game message in the chatbox */
+[data-skin="osrs"] .toast { border-radius: 0; background: #D8CCB4; color: #000; text-shadow: none; border: 2px solid #1E1912; box-shadow: none; }
+[data-skin="osrs"] .toast button { color: #0000FF; }
+[data-skin="osrs"] .code { border-radius: 0; background: #D8CCB4; color: #000; text-shadow: none; }

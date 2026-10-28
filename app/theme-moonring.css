@@ -1,0 +1,205 @@
+/* Moonring skin, after the game's key art: thin neon line art on pure black, violet / magenta / amber / white,
+   an art-deco geometric wordmark, interlocking rings. The moon-phase row in the backdrop lights the real phase.
+   Meaning stays the same: magenta = do this, amber = coming up, green = all good, rose = money you owe. */
+
+:root[data-skin="moonring"] {
+  --ground: #000000;
+  --surface: #050208;
+  --sunken: #0B0614;
+  --ink: #F4EEFF;
+  --ink-2: #B9A7E6;
+  --ink-3: #7A6AA8;
+  --rule: #2C1A5C;
+  --rule-strong: #7B3CFF;
+  --violet: #7B3CFF;
+  --magenta: #FF2BD6;
+  --amber: #FFA51F;
+  --mandatory: #FF2BD6;
+  --mandatory-ink: #000000;
+  --mandatory-soft: #2A0626;
+  --warning: #FFA51F;
+  --warning-ink: #000000;
+  --warning-soft: #2B1A04;
+  --warning-text: #FFB84D;
+  --safe: #5CFF9D;
+  --safe-ink: #000000;
+  --safe-soft: #052615;
+  --owe: #FF4F7B;
+  --owe-ink: #000000;
+  --owe-soft: #2B0712;
+
+  --board: #000000;
+  --board-2: #0B0614;
+  --board-ink: #F4EEFF;
+  --board-ink-2: #B9A7E6;
+  --asphalt: #2C1A5C;
+
+  --hazard-a: #FFA51F;
+  --hazard-b: #000000;
+  --plate-bg: #000000;
+
+  --display: "Poiret One", "Josefin Sans", "Century Gothic", sans-serif;
+  --body: "Josefin Sans", "Century Gothic", sans-serif;
+  --r-s: 2px;
+  --r-m: 4px;
+  --r-l: 6px;
+  --line: 1.5px;
+  color-scheme: dark;
+}
+
+:root[data-skin="moonring"][data-moon="waning"] body { --moon-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 860' preserveAspectRatio='xMidYMid slice' fill='none' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M42 28a24 24 0 1 0 20 38a19 19 0 1 1 -20 -38z' stroke='%23FFA51F'/%3E%3Cpath d='M88 0v40' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='88' cy='44' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M102 0v64' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='102' cy='68' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M116 0v28' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='116' cy='32' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M175 26a8 8 0 0 0 0 16a4.4 8 0 0 1 0 -16z' stroke='%23FFA51F' opacity='1'/%3E%3Ccircle cx='199' cy='34' r='8' stroke='%23FFFFFF' opacity='.55' stroke-dasharray='2 3'/%3E%3Cpath d='M223 26a8 8 0 0 1 0 16a4.4 8 0 0 0 0 -16z' stroke='%23FFFFFF' opacity='.55'/%3E%3Ccircle cx='247' cy='34' r='8' stroke='%23FFFFFF' opacity='.55'/%3E%3Crect x='318' y='12' width='60' height='40' stroke='%237B3CFF'/%3E%3Cpath d='M326 32q22 -18 44 0q-22 18 -44 0z' stroke='%23FF2BD6'/%3E%3Ccircle cx='348' cy='32' r='5' stroke='%23FFA51F'/%3E%3Cpath d='M0 76h400' stroke='%237B3CFF' opacity='.7'/%3E%3Cpath d='M140 92h260' stroke='%23FF2BD6' opacity='.5'/%3E%3Cpath d='M18 830v-70' stroke='%237B3CFF'/%3E%3Cpath d='M8 774l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 788l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 802l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 816l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M44 805v-70' stroke='%237B3CFF'/%3E%3Cpath d='M34 749l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 763l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 777l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 791l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M70 842v-70' stroke='%237B3CFF'/%3E%3Cpath d='M60 786l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 800l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 814l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 828l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M110 860v-90h30v90M110 770v-10h6v6h6v-6h6v6h6v-6h6v10' stroke='%23FFA51F'/%3E%3Crect x='120' y='790' width='10' height='14' stroke='%23FFA51F'/%3E%3Cpath d='M150 860a70 70 0 0 1 140 0' stroke='%23FF2BD6' stroke-dasharray='1 6' stroke-width='2.2'/%3E%3Cpath d='M196 790v40m-6 -8l6 8l6 -8m-12 -14l6 8l6 -8' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M214 790v40m-6 -8l6 8l6 -8m-12 -14l6 8l6 -8' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M270 860a60 60 0 0 1 120 0' stroke='%237B3CFF'/%3E%3Cpath d='M330 860a50 40 0 0 1 90 -10' stroke='%237B3CFF' opacity='.8'/%3E%3Cpath d='M0 842h400' stroke='%237B3CFF' opacity='.6'/%3E%3C/svg%3E"); }
+:root[data-skin="moonring"][data-moon="new"] body { --moon-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 860' preserveAspectRatio='xMidYMid slice' fill='none' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M42 28a24 24 0 1 0 20 38a19 19 0 1 1 -20 -38z' stroke='%23FFA51F'/%3E%3Cpath d='M88 0v40' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='88' cy='44' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M102 0v64' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='102' cy='68' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M116 0v28' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='116' cy='32' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M175 26a8 8 0 0 0 0 16a4.4 8 0 0 1 0 -16z' stroke='%23FFFFFF' opacity='.55'/%3E%3Ccircle cx='199' cy='34' r='8' stroke='%23FFA51F' opacity='1' stroke-dasharray='2 3'/%3E%3Cpath d='M223 26a8 8 0 0 1 0 16a4.4 8 0 0 0 0 -16z' stroke='%23FFFFFF' opacity='.55'/%3E%3Ccircle cx='247' cy='34' r='8' stroke='%23FFFFFF' opacity='.55'/%3E%3Crect x='318' y='12' width='60' height='40' stroke='%237B3CFF'/%3E%3Cpath d='M326 32q22 -18 44 0q-22 18 -44 0z' stroke='%23FF2BD6'/%3E%3Ccircle cx='348' cy='32' r='5' stroke='%23FFA51F'/%3E%3Cpath d='M0 76h400' stroke='%237B3CFF' opacity='.7'/%3E%3Cpath d='M140 92h260' stroke='%23FF2BD6' opacity='.5'/%3E%3Cpath d='M18 830v-70' stroke='%237B3CFF'/%3E%3Cpath d='M8 774l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 788l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 802l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 816l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M44 805v-70' stroke='%237B3CFF'/%3E%3Cpath d='M34 749l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 763l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 777l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 791l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M70 842v-70' stroke='%237B3CFF'/%3E%3Cpath d='M60 786l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 800l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 814l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 828l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M110 860v-90h30v90M110 770v-10h6v6h6v-6h6v6h6v-6h6v10' stroke='%23FFA51F'/%3E%3Crect x='120' y='790' width='10' height='14' stroke='%23FFA51F'/%3E%3Cpath d='M150 860a70 70 0 0 1 140 0' stroke='%23FF2BD6' stroke-dasharray='1 6' stroke-width='2.2'/%3E%3Cpath d='M196 790v40m-6 -8l6 8l6 -8m-12 -14l6 8l6 -8' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M214 790v40m-6 -8l6 8l6 -8m-12 -14l6 8l6 -8' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M270 860a60 60 0 0 1 120 0' stroke='%237B3CFF'/%3E%3Cpath d='M330 860a50 40 0 0 1 90 -10' stroke='%237B3CFF' opacity='.8'/%3E%3Cpath d='M0 842h400' stroke='%237B3CFF' opacity='.6'/%3E%3C/svg%3E"); }
+:root[data-skin="moonring"][data-moon="waxing"] body { --moon-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 860' preserveAspectRatio='xMidYMid slice' fill='none' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M42 28a24 24 0 1 0 20 38a19 19 0 1 1 -20 -38z' stroke='%23FFA51F'/%3E%3Cpath d='M88 0v40' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='88' cy='44' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M102 0v64' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='102' cy='68' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M116 0v28' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='116' cy='32' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M175 26a8 8 0 0 0 0 16a4.4 8 0 0 1 0 -16z' stroke='%23FFFFFF' opacity='.55'/%3E%3Ccircle cx='199' cy='34' r='8' stroke='%23FFFFFF' opacity='.55' stroke-dasharray='2 3'/%3E%3Cpath d='M223 26a8 8 0 0 1 0 16a4.4 8 0 0 0 0 -16z' stroke='%23FFA51F' opacity='1'/%3E%3Ccircle cx='247' cy='34' r='8' stroke='%23FFFFFF' opacity='.55'/%3E%3Crect x='318' y='12' width='60' height='40' stroke='%237B3CFF'/%3E%3Cpath d='M326 32q22 -18 44 0q-22 18 -44 0z' stroke='%23FF2BD6'/%3E%3Ccircle cx='348' cy='32' r='5' stroke='%23FFA51F'/%3E%3Cpath d='M0 76h400' stroke='%237B3CFF' opacity='.7'/%3E%3Cpath d='M140 92h260' stroke='%23FF2BD6' opacity='.5'/%3E%3Cpath d='M18 830v-70' stroke='%237B3CFF'/%3E%3Cpath d='M8 774l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 788l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 802l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 816l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M44 805v-70' stroke='%237B3CFF'/%3E%3Cpath d='M34 749l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 763l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 777l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 791l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M70 842v-70' stroke='%237B3CFF'/%3E%3Cpath d='M60 786l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 800l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 814l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 828l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M110 860v-90h30v90M110 770v-10h6v6h6v-6h6v6h6v-6h6v10' stroke='%23FFA51F'/%3E%3Crect x='120' y='790' width='10' height='14' stroke='%23FFA51F'/%3E%3Cpath d='M150 860a70 70 0 0 1 140 0' stroke='%23FF2BD6' stroke-dasharray='1 6' stroke-width='2.2'/%3E%3Cpath d='M196 790v40m-6 -8l6 8l6 -8m-12 -14l6 8l6 -8' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M214 790v40m-6 -8l6 8l6 -8m-12 -14l6 8l6 -8' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M270 860a60 60 0 0 1 120 0' stroke='%237B3CFF'/%3E%3Cpath d='M330 860a50 40 0 0 1 90 -10' stroke='%237B3CFF' opacity='.8'/%3E%3Cpath d='M0 842h400' stroke='%237B3CFF' opacity='.6'/%3E%3C/svg%3E"); }
+:root[data-skin="moonring"][data-moon="full"] body { --moon-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 860' preserveAspectRatio='xMidYMid slice' fill='none' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M42 28a24 24 0 1 0 20 38a19 19 0 1 1 -20 -38z' stroke='%23FFA51F'/%3E%3Cpath d='M88 0v40' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='88' cy='44' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M102 0v64' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='102' cy='68' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M116 0v28' stroke='%23FF2BD6' opacity='.8'/%3E%3Ccircle cx='116' cy='32' r='3' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M175 26a8 8 0 0 0 0 16a4.4 8 0 0 1 0 -16z' stroke='%23FFFFFF' opacity='.55'/%3E%3Ccircle cx='199' cy='34' r='8' stroke='%23FFFFFF' opacity='.55' stroke-dasharray='2 3'/%3E%3Cpath d='M223 26a8 8 0 0 1 0 16a4.4 8 0 0 0 0 -16z' stroke='%23FFFFFF' opacity='.55'/%3E%3Ccircle cx='247' cy='34' r='8' stroke='%23FFA51F' opacity='1'/%3E%3Crect x='318' y='12' width='60' height='40' stroke='%237B3CFF'/%3E%3Cpath d='M326 32q22 -18 44 0q-22 18 -44 0z' stroke='%23FF2BD6'/%3E%3Ccircle cx='348' cy='32' r='5' stroke='%23FFA51F'/%3E%3Cpath d='M0 76h400' stroke='%237B3CFF' opacity='.7'/%3E%3Cpath d='M140 92h260' stroke='%23FF2BD6' opacity='.5'/%3E%3Cpath d='M18 830v-70' stroke='%237B3CFF'/%3E%3Cpath d='M8 774l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 788l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 802l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M8 816l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M44 805v-70' stroke='%237B3CFF'/%3E%3Cpath d='M34 749l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 763l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 777l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M34 791l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M70 842v-70' stroke='%237B3CFF'/%3E%3Cpath d='M60 786l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 800l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 814l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M60 828l10 -10l10 10' stroke='%237B3CFF'/%3E%3Cpath d='M110 860v-90h30v90M110 770v-10h6v6h6v-6h6v6h6v-6h6v10' stroke='%23FFA51F'/%3E%3Crect x='120' y='790' width='10' height='14' stroke='%23FFA51F'/%3E%3Cpath d='M150 860a70 70 0 0 1 140 0' stroke='%23FF2BD6' stroke-dasharray='1 6' stroke-width='2.2'/%3E%3Cpath d='M196 790v40m-6 -8l6 8l6 -8m-12 -14l6 8l6 -8' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M214 790v40m-6 -8l6 8l6 -8m-12 -14l6 8l6 -8' stroke='%23FF2BD6' opacity='.8'/%3E%3Cpath d='M270 860a60 60 0 0 1 120 0' stroke='%237B3CFF'/%3E%3Cpath d='M330 860a50 40 0 0 1 90 -10' stroke='%237B3CFF' opacity='.8'/%3E%3Cpath d='M0 842h400' stroke='%237B3CFF' opacity='.6'/%3E%3C/svg%3E"); }
+
+[data-skin="moonring"] body {
+  font-size: 17px; font-weight: 400; letter-spacing: .01em;
+  background: var(--moon-art, none) center top / 100% auto no-repeat fixed, #000;
+}
+[data-skin="moonring"] #app { position: relative; }
+[data-skin="moonring"] .view { gap: 30px; }
+[data-skin="moonring"] :focus-visible { outline: 1.5px solid var(--amber); outline-offset: 3px; }
+[data-skin="moonring"] a { color: var(--amber); }
+[data-skin="moonring"] b, [data-skin="moonring"] strong { font-weight: 600; }
+[data-skin="moonring"] h1, [data-skin="moonring"] h2, [data-skin="moonring"] h3 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .14em; }
+
+/* Wordmark-style titles: thin, wide, with the two interlocking rings after them */
+[data-skin="moonring"] .page-title, [data-skin="moonring"] .setup h1 { font-size: 2.4rem; color: #fff; letter-spacing: .16em; display: flex; align-items: center; gap: 12px; }
+[data-skin="moonring"] .page-title::after {
+  content: ""; width: 40px; height: 22px; flex: none;
+  background:
+    radial-gradient(circle at 11px 11px, transparent 8.5px, var(--magenta) 9px 10.5px, transparent 11px),
+    radial-gradient(circle at 29px 11px, transparent 8.5px, var(--amber) 9px 10.5px, transparent 11px);
+}
+[data-skin="moonring"] .page-head.with-back .page-title { font-size: 1.6rem; }
+[data-skin="moonring"] .block-title, [data-skin="moonring"] .block h2, [data-skin="moonring"] .step-title, [data-skin="moonring"] .sheet-head h2 {
+  color: var(--ink); font-size: 1.15rem; letter-spacing: .2em; display: flex; align-items: center; gap: 10px;
+}
+[data-skin="moonring"] .block > h2::after, [data-skin="moonring"] .block > .block-title::after { content: ""; flex: 1; height: var(--line); background: linear-gradient(90deg, var(--violet), transparent); }
+[data-skin="moonring"] .cal-title { letter-spacing: .06em; font-size: 1.3rem; }
+[data-skin="moonring"] .brand-name { letter-spacing: .08em !important; }
+[data-skin="moonring"] .money { font-family: var(--body); font-weight: 600; letter-spacing: .04em; color: var(--amber); }
+[data-skin="moonring"] .pos, [data-skin="moonring"] .bal-amt.pos .money { color: var(--safe); }
+[data-skin="moonring"] .neg, [data-skin="moonring"] .bal-amt.neg .money { color: var(--owe); }
+[data-skin="moonring"] .page-sub, [data-skin="moonring"] .hint, [data-skin="moonring"] .lede, [data-skin="moonring"] .quiet { color: var(--ink-2); }
+
+/* ---------- line-art panels ---------- */
+[data-skin="moonring"] :is(.sign-row, .glist, .rows, .house, .job, .evlist, .balances, .result, .sheet-scroll, .roster, .month, .today, .evfacts, .scan, .empty, .plate-rent, .skin-card, .curb) {
+  background: rgba(0,0,0,.88); border: var(--line) solid var(--violet); box-shadow: 0 0 14px rgba(123,60,255,.18);
+}
+[data-skin="moonring"] :is(.gwrap, .gitem, .row, .evlist li, .today li, .house li) + :is(.gwrap, .gitem, .row, .evlist li, .today li, .house li) { border-top: 1px dashed #3A2470; }
+[data-skin="moonring"] .sign-row { border-color: var(--magenta); box-shadow: 0 0 12px rgba(255,43,214,.15); }
+[data-skin="moonring"] .sign-row.calm { border-color: var(--safe); background: rgba(0,0,0,.88); box-shadow: none; }
+[data-skin="moonring"] .sign-row.alert { border-color: var(--amber); background: rgba(0,0,0,.88); }
+[data-skin="moonring"] .sign-row b { letter-spacing: .03em; }
+/* signs become outlines, like the key art */
+[data-skin="moonring"] .sign .sign-shape { fill: none !important; stroke-width: 1.5; }
+[data-skin="moonring"] .sign-mandatory .sign-shape, [data-skin="moonring"] .sign-mandatory .sign-glyph { stroke: var(--magenta); }
+[data-skin="moonring"] .sign-owe .sign-shape, [data-skin="moonring"] .sign-owe .sign-glyph { stroke: var(--owe); }
+[data-skin="moonring"] .sign-safe .sign-shape, [data-skin="moonring"] .sign-safe .sign-glyph { stroke: var(--safe); }
+[data-skin="moonring"] .sign-warning .sign-shape, [data-skin="moonring"] .sign-warning .sign-glyph { stroke: var(--amber); }
+[data-skin="moonring"] .empty { border-style: dashed; }
+
+/* ---------- frame ---------- */
+[data-skin="moonring"] .topbar { background: rgba(0,0,0,.9); border-bottom: var(--line) solid var(--violet); backdrop-filter: none; }
+[data-skin="moonring"] .brand-name { font-family: var(--display); text-transform: uppercase; letter-spacing: .14em; font-size: 1.05rem; color: #fff; }
+[data-skin="moonring"] .brand-mark { color: var(--violet); }
+[data-skin="moonring"] .me-btn { background: #000; border: var(--line) solid var(--magenta); color: var(--magenta); }
+[data-skin="moonring"] .local-banner { background: #000; border: var(--line) dashed var(--amber); color: var(--amber); border-radius: 0; }
+[data-skin="moonring"] .tabbar { background: #000; border-top: var(--line) solid var(--violet); }
+[data-skin="moonring"] .tab { color: var(--ink-3); font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: .7rem; }
+[data-skin="moonring"] .tab.on { color: #fff; }
+[data-skin="moonring"] .tab.on::after { width: 8px; height: 8px; background: none; border: var(--line) solid var(--amber); }
+/* the scan button is the pair of interlocking rings */
+[data-skin="moonring"] .tab-scan-disc {
+  background: #000; color: #fff; width: 62px; height: 62px; margin-top: -22px;
+  box-shadow: 0 0 0 1.5px var(--magenta), 10px 0 0 -8.5px #000, 10px 0 0 -7px var(--amber), 0 0 18px rgba(255,43,214,.35);
+}
+[data-skin="moonring"] .tab-scan-label { font-family: var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--magenta); }
+
+/* ---------- buttons: outlined, glowing ---------- */
+[data-skin="moonring"] .btn {
+  background: #000; color: var(--ink); border: var(--line) solid var(--violet); font-family: var(--body);
+  font-weight: 600; letter-spacing: .1em; text-transform: uppercase; font-size: .92rem;
+}
+[data-skin="moonring"] .btn.primary { background: #000; color: var(--magenta); border-color: var(--magenta); box-shadow: 0 0 12px rgba(255,43,214,.35), inset 0 0 10px rgba(255,43,214,.15); }
+[data-skin="moonring"] .btn.danger { color: var(--owe); border-color: var(--owe); }
+[data-skin="moonring"] .btn:active:not(:disabled) { background: rgba(255,43,214,.15); transform: none; }
+[data-skin="moonring"] .icon-btn { color: var(--ink-2); }
+[data-skin="moonring"] .icon-btn.tool { background: #000; border: var(--line) solid var(--violet); }
+[data-skin="moonring"] .icon-btn.tool.on { border-color: var(--amber); color: var(--amber); }
+[data-skin="moonring"] .badge { background: var(--magenta); color: #000; }
+[data-skin="moonring"] .link { color: var(--amber); letter-spacing: .06em; }
+
+/* ---------- inputs + choices ---------- */
+[data-skin="moonring"] :is(input:not([type="file"]):not([type="checkbox"]), textarea, select) {
+  background: #000; border: 0; border-bottom: var(--line) solid var(--violet); border-radius: 0; color: #fff;
+}
+[data-skin="moonring"] :is(input, textarea, select):focus { border-bottom-color: var(--amber); box-shadow: 0 6px 10px -8px var(--amber); }
+[data-skin="moonring"] input::placeholder, [data-skin="moonring"] textarea::placeholder { color: var(--ink-3); }
+[data-skin="moonring"] .field > span, [data-skin="moonring"] legend, [data-skin="moonring"] .again-label { color: var(--ink-2); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 600; }
+[data-skin="moonring"] :is(.seg button, .kind-opt, .pill, .chip, .tag, .lane-chip) { background: #000; border: var(--line) solid #3A2470; color: var(--ink); }
+[data-skin="moonring"] :is(.seg button.on, .kind-opt.on, .pill.choice.on) { border-color: var(--amber); background: #000; color: var(--amber); box-shadow: 0 0 10px rgba(255,165,31,.25); }
+[data-skin="moonring"] .seg button b { font-family: var(--body); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; }
+[data-skin="moonring"] .chip-on, [data-skin="moonring"] .lane-chip.on, [data-skin="moonring"] .tag.on { background: #000; }
+/* member dots become rings in the member's colour */
+[data-skin="moonring"] .chip-dot { background: #000 !important; color: var(--c); box-shadow: inset 0 0 0 1.5px var(--c); }
+[data-skin="moonring"] .lane-label .chip-dot { color: var(--c); }
+[data-skin="moonring"] .switch-row input { background: #000 !important; box-shadow: inset 0 0 0 1.5px var(--violet); }
+[data-skin="moonring"] .switch-row input::after { background: var(--ink-3); box-shadow: none; }
+[data-skin="moonring"] .switch-row input:checked::after { background: var(--magenta); }
+[data-skin="moonring"] .gcircle { border: var(--line) solid var(--amber); }
+[data-skin="moonring"] .grocery.done .tick-box, [data-skin="moonring"] .gitem.greyed .gcircle { background: #000; border-color: var(--safe); color: var(--safe); }
+[data-skin="moonring"] .g-qty { background: none; border: 1px solid var(--amber); color: var(--amber); }
+
+/* ---------- home ---------- */
+[data-skin="moonring"] .plate-sign { background: #000; color: #fff; box-shadow: inset 0 0 0 1.5px var(--violet); }
+[data-skin="moonring"] .plate-num { font-family: var(--display); font-weight: 400; color: var(--amber); font-size: 2.8rem; }
+[data-skin="moonring"] .plate-street { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .06em; }
+[data-skin="moonring"] .plate-postal { background: none; border: 1px solid var(--magenta); color: var(--magenta); }
+[data-skin="moonring"] .curb::before, [data-skin="moonring"] .curb::after { display: none; }
+[data-skin="moonring"] .curb-day { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .12em; color: #fff; }
+[data-skin="moonring"] .curb-day span { color: var(--amber); font-family: var(--body); letter-spacing: .1em; }
+[data-skin="moonring"] .curb-kicker { text-transform: uppercase; letter-spacing: .16em; font-size: .8rem; color: var(--magenta); }
+[data-skin="moonring"] .curb-alert { background: #000; color: var(--amber); border-bottom: var(--line) solid var(--amber); font-family: var(--display); letter-spacing: .14em; text-transform: uppercase; }
+[data-skin="moonring"] .curb-alert .sign-shape { fill: none; stroke: var(--amber); }
+[data-skin="moonring"] .curb-line { background: none; border-top: var(--line) solid var(--violet); height: 0; }
+[data-skin="moonring"] .curb-carts li span { text-transform: uppercase; letter-spacing: .1em; font-size: .78rem; }
+[data-skin="moonring"] .curb-weeks { border-top: 1px dashed #3A2470; }
+[data-skin="moonring"] .cw-date { color: var(--amber); font-family: var(--body); }
+[data-skin="moonring"] .house-icon, [data-skin="moonring"] .evicon { background: #000; box-shadow: inset 0 0 0 1px var(--violet); color: var(--violet); border-radius: 50%; }
+[data-skin="moonring"] .house-num { color: var(--amber); font-family: var(--body); }
+
+/* ---------- lists, tables, calendar ---------- */
+[data-skin="moonring"] .sheet-table thead th, [data-skin="moonring"] .sheet-table tfoot :is(th, td) { background: #000; color: var(--ink-2); text-transform: uppercase; letter-spacing: .1em; font-size: .72rem; }
+[data-skin="moonring"] .sheet-table .sticky { background: #050208; }
+[data-skin="moonring"] .sheet-table td { font-family: var(--body); font-weight: 600; }
+[data-skin="moonring"] .sheet-table tfoot :is(th, td) { border-top: var(--line) solid var(--amber); }
+[data-skin="moonring"] td.payer { background: rgba(92,255,157,.06); }
+[data-skin="moonring"] .bal-track { background: #0B0614; box-shadow: inset 0 0 0 1px #2C1A5C; }
+[data-skin="moonring"] .gauge i { background: none; box-shadow: inset 0 0 0 1px #2C1A5C; }
+[data-skin="moonring"] .step::before { background: #000; color: var(--amber); box-shadow: inset 0 0 0 1.5px var(--amber); font-family: var(--body); }
+[data-skin="moonring"] .step::after { background: repeating-linear-gradient(var(--violet) 0 3px, transparent 3px 7px); }
+[data-skin="moonring"] .roster-head { background: #000; border-bottom: 1px solid var(--violet); }
+[data-skin="moonring"] .rday small, [data-skin="moonring"] .mhead { color: var(--ink-3); text-transform: uppercase; letter-spacing: .08em; }
+[data-skin="moonring"] .rday b, [data-skin="moonring"] .mday b { font-family: var(--body); font-weight: 600; }
+[data-skin="moonring"] .rday.today b, [data-skin="moonring"] .mday.today b { background: none; color: var(--amber); box-shadow: inset 0 0 0 1.5px var(--amber); }
+[data-skin="moonring"] .rday.sel::after { background: var(--magenta); height: 2px; }
+[data-skin="moonring"] .lane { border-top-color: #2C1A5C; }
+[data-skin="moonring"] .lane-label { border-right-color: #2C1A5C; }
+[data-skin="moonring"] .lane-cell.sel { background: rgba(255,43,214,.07); }
+[data-skin="moonring"] .blk { background: #000; color: var(--c); box-shadow: inset 0 0 0 1.5px var(--c); }
+[data-skin="moonring"] .lane-house .blk:not(.auto) { background: #000; color: var(--amber); box-shadow: inset 0 0 0 1.5px var(--amber); border: 0; }
+[data-skin="moonring"] .mday.sel { background: none; box-shadow: inset 0 0 0 1.5px var(--magenta); }
+[data-skin="moonring"] .evtime, [data-skin="moonring"] .today-time { color: var(--amber); font-family: var(--body); font-weight: 600; }
+[data-skin="moonring"] .evrow::before, [data-skin="moonring"] .today a::before { width: 2px; }
+[data-skin="moonring"] .whos-home { background: none; border: 1px dashed var(--violet); color: var(--ink-2); }
+
+/* ---------- sheets + toasts ---------- */
+[data-skin="moonring"] .sheet-backdrop { background: rgba(0,0,0,.75); }
+[data-skin="moonring"] .sheet { background: #000; border: var(--line) solid var(--violet); border-bottom: 0; box-shadow: 0 -8px 30px rgba(123,60,255,.25); }
+[data-skin="moonring"] .sheet-grip { background: var(--violet); }
+[data-skin="moonring"] .sheet-actions { border-top: 1px dashed #3A2470; }
+[data-skin="moonring"] .toast { background: #000; color: #fff; border: var(--line) solid var(--magenta); box-shadow: 0 0 16px rgba(255,43,214,.3); }
+[data-skin="moonring"] .toast button { color: var(--amber); }
+[data-skin="moonring"] .code { background: #000; color: var(--amber); border: 1px solid var(--amber); }

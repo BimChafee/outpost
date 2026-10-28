@@ -1,0 +1,181 @@
+/* Wrath of the Lich King skin: frost-lit Northrend night, gold carved headings, tooltip panels,
+   red WoW buttons and item-quality colours. Meaning stays the same:
+   gold = do this (quest !), legendary orange = coming up, uncommon green = all good, red = money you owe. */
+
+:root[data-skin="wotlk"] {
+  --ground: #070D18;
+  --surface: rgba(6, 12, 26, .92);
+  --sunken: #050A14;
+  --ink: #EDE6D4;
+  --ink-2: #9FB6C9;
+  --ink-3: #6A7E94;
+  --rule: #1C2A42;
+  --rule-strong: #5E6E86;
+  --frost: #7FD4FF;
+  --epic: #A335EE;
+  --mandatory: #FFD100;
+  --mandatory-ink: #140C00;
+  --mandatory-soft: #2A2410;
+  --warning: #FF8000;
+  --warning-ink: #140800;
+  --warning-soft: #2E1A08;
+  --warning-text: #FF9A33;
+  --safe: #1EFF00;
+  --safe-ink: #031400;
+  --safe-soft: #0C2410;
+  --owe: #FF2020;
+  --owe-ink: #FFFFFF;
+  --owe-soft: #2E0C0C;
+
+  --board: #060B16;
+  --board-2: #0B1426;
+  --board-ink: #EDE6D4;
+  --board-ink-2: #9FB6C9;
+  --asphalt: #1A2944;
+
+  --hazard-a: #FFD100;
+  --hazard-b: #140C00;
+  --plate-bg: #E8D6A8;
+
+  --display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --body: "Marcellus", Georgia, serif;
+  --r-s: 3px;
+  --r-m: 5px;
+  --r-l: 8px;
+  color-scheme: dark;
+}
+
+[data-skin="wotlk"] body {
+  font-size: 17px; line-height: 1.5;
+  background:
+    radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,.55), transparent 60%) 0 0 / 140px 160px,
+    radial-gradient(1px 1px at 90px 110px, rgba(190,230,255,.5), transparent 60%) 0 0 / 180px 200px,
+    radial-gradient(110% 55% at 50% 0%, #1B4A78 0%, transparent 65%),
+    radial-gradient(80% 50% at 100% 100%, #2B1446 0%, transparent 70%),
+    linear-gradient(#0C1A30, #070D18 60%);
+  background-color: #070D18;
+}
+[data-skin="wotlk"] :focus-visible { outline: 2px solid var(--frost); outline-offset: 2px; }
+[data-skin="wotlk"] a { color: var(--frost); }
+[data-skin="wotlk"] h1, [data-skin="wotlk"] h2, [data-skin="wotlk"] h3 { font-weight: 700; letter-spacing: .03em; }
+/* carved gold with a frost rim-light */
+[data-skin="wotlk"] .page-title, [data-skin="wotlk"] .curb-day, [data-skin="wotlk"] .setup h1 {
+  background: linear-gradient(#FFF3B0, #FFD100 45%, #B8860B);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 6px rgba(127,212,255,.45)) drop-shadow(0 2px 0 #000);
+  font-size: 2.3rem;
+}
+[data-skin="wotlk"] .curb-day { font-size: clamp(2.6rem, 13vw, 3.6rem); }
+[data-skin="wotlk"] .curb-day span { -webkit-text-fill-color: var(--frost); color: var(--frost); filter: none; }
+[data-skin="wotlk"] .block-title, [data-skin="wotlk"] .block h2, [data-skin="wotlk"] .step-title, [data-skin="wotlk"] .sheet-head h2 { color: #FFD100; font-size: 1.25rem; text-shadow: 0 1px 0 #000; }
+[data-skin="wotlk"] .money { font-family: var(--display); color: #FFD100; }
+[data-skin="wotlk"] .pos { color: var(--safe); }
+[data-skin="wotlk"] .neg { color: var(--owe); }
+
+/* ---------- tooltip panels ---------- */
+[data-skin="wotlk"] :is(.sign-row, .glist, .rows, .house, .job, .evlist, .balances, .result, .sheet-scroll, .roster, .month, .today, .evfacts, .scan, .empty, .plate-rent, .skin-card) {
+  background: rgba(6,12,26,.92); border: 1px solid #5E6E86;
+  box-shadow: inset 0 0 0 1px #0B1426, inset 0 1px 0 rgba(127,212,255,.25), 0 4px 14px rgba(0,0,0,.5);
+}
+[data-skin="wotlk"] .sign-row.calm { background: rgba(9,30,14,.9); border-color: #2C7A2C; }
+[data-skin="wotlk"] .sign-row.alert { background: rgba(40,22,6,.9); border-color: #A65A1A; }
+[data-skin="wotlk"] .sign-row b { color: #FFFFFF; }
+[data-skin="wotlk"] .sign-mandatory .sign-shape { fill: #FFD100; }
+[data-skin="wotlk"] .sign-mandatory .sign-glyph { stroke: #140C00; }
+[data-skin="wotlk"] .sign-warning .sign-shape { stroke: #000; }
+[data-skin="wotlk"] .sign { filter: drop-shadow(0 0 4px rgba(127,212,255,.35)); }
+/* item quality colours on names */
+[data-skin="wotlk"] .gname, [data-skin="wotlk"] .t-title { color: #0070DD; }
+[data-skin="wotlk"] .evmain b, [data-skin="wotlk"] .today-main b, [data-skin="wotlk"] .house-main b { color: #FFFFFF; }
+[data-skin="wotlk"] .evrow.house .evmain b, [data-skin="wotlk"] .today a.house .today-main b { color: #A335EE; }
+[data-skin="wotlk"] .job-name { color: #FFD100; }
+
+/* ---------- frame ---------- */
+[data-skin="wotlk"] .topbar { background: linear-gradient(rgba(6,12,26,.95), rgba(6,12,26,.8)); border-bottom: 1px solid #5E6E86; box-shadow: 0 1px 0 rgba(255,209,0,.25); }
+[data-skin="wotlk"] .brand-name { font-family: var(--display); color: #FFD100; text-shadow: 0 0 8px rgba(127,212,255,.4), 0 1px 0 #000; }
+[data-skin="wotlk"] .brand-mark { color: var(--frost); }
+[data-skin="wotlk"] .me-btn { background: #0B1426; border-color: #5E6E86; }
+[data-skin="wotlk"] .local-banner { background: rgba(40,22,6,.9); border: 1px solid #A65A1A; color: #FF9A33; }
+[data-skin="wotlk"] .tabbar { background: linear-gradient(#0E1830, #050A14); border-top: 1px solid #C9A44C; box-shadow: 0 -1px 0 #3A2A0A; }
+[data-skin="wotlk"] .tab { font-family: var(--display); font-weight: 700; color: #6A7E94; font-size: .72rem; }
+[data-skin="wotlk"] .tab.on { color: #FFD100; text-shadow: 0 0 8px rgba(127,212,255,.6); }
+[data-skin="wotlk"] .tab.on::after { background: var(--frost); box-shadow: 0 0 8px var(--frost); }
+/* action-bar button: gold ring, frost core */
+[data-skin="wotlk"] .tab-scan-disc {
+  background: radial-gradient(circle at 50% 40%, #3D8FD0, #0B2A4A 70%); color: #E9F7FF;
+  box-shadow: 0 0 0 3px #C9A44C, 0 0 0 5px #3A2A0A, 0 0 18px rgba(127,212,255,.55);
+}
+[data-skin="wotlk"] .tab-scan-label { font-family: var(--display); color: #FFD100; font-weight: 700; }
+
+/* ---------- buttons: classic red with gold text ---------- */
+[data-skin="wotlk"] .btn {
+  background: linear-gradient(#1B2740, #0B1426); color: #FFD100; border: 1px solid #5E6E86;
+  font-family: var(--display); font-weight: 700; letter-spacing: .02em; text-shadow: 0 1px 0 #000;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+}
+[data-skin="wotlk"] .btn.primary {
+  background: linear-gradient(#A3271A, #5E0F07 60%, #3E0904); color: #FFD100; border: 1px solid #C9A44C;
+  box-shadow: inset 0 1px 0 rgba(255,200,120,.35), 0 0 0 1px #2A0603;
+}
+[data-skin="wotlk"] .btn.primary:active:not(:disabled) { background: linear-gradient(#5E0F07, #A3271A); }
+[data-skin="wotlk"] .btn.danger { color: #FF5A3C; }
+[data-skin="wotlk"] .icon-btn { color: var(--frost); }
+[data-skin="wotlk"] .icon-btn.subtle { color: #6A7E94; }
+[data-skin="wotlk"] .icon-btn.tool { background: linear-gradient(#1B2740, #0B1426); border-color: #5E6E86; }
+[data-skin="wotlk"] .icon-btn.tool.on { border-color: #C9A44C; color: #FFD100; box-shadow: 0 0 10px rgba(255,209,0,.35); }
+[data-skin="wotlk"] .badge { background: #A3271A; color: #FFD100; }
+[data-skin="wotlk"] .link { color: var(--frost); }
+[data-skin="wotlk"] .danger-link { color: #FF5A3C; }
+
+/* ---------- inputs + choices ---------- */
+[data-skin="wotlk"] :is(input:not([type="file"]):not([type="checkbox"]), textarea, select) {
+  background: rgba(3,7,16,.9); border: 1px solid #3A4A64; color: #EDE6D4; box-shadow: inset 0 1px 4px rgba(0,0,0,.6);
+}
+[data-skin="wotlk"] :is(input, textarea, select):focus { border-color: var(--frost); box-shadow: 0 0 0 2px rgba(127,212,255,.25); }
+[data-skin="wotlk"] .field > span, [data-skin="wotlk"] legend, [data-skin="wotlk"] .again-label { color: #C9A44C; font-family: var(--display); font-weight: 700; font-size: .8rem; }
+[data-skin="wotlk"] :is(.seg button, .kind-opt, .pill, .chip, .tag, .lane-chip) { background: rgba(11,20,38,.9); border-color: #3A4A64; color: #EDE6D4; }
+[data-skin="wotlk"] :is(.seg button.on, .kind-opt.on, .pill.choice.on) { border-color: #A335EE; background: rgba(60,20,90,.55); box-shadow: inset 0 0 0 1px #A335EE, 0 0 10px rgba(163,53,238,.35); color: #fff; }
+[data-skin="wotlk"] .seg button b { font-family: var(--display); }
+[data-skin="wotlk"] .switch-row input:checked { background: #A335EE !important; }
+[data-skin="wotlk"] .gcircle { border-color: #C9A44C; }
+[data-skin="wotlk"] .g-qty { background: none; color: #FFD100; font-family: var(--display); }
+
+/* ---------- home ---------- */
+/* the address plate is a quest scroll */
+[data-skin="wotlk"] .plate-sign { color: #3A2510; box-shadow: inset 0 0 0 1px #8A6A3A, inset 0 0 24px rgba(120,80,30,.35); background: linear-gradient(#F0E2B8, #DCC48E); }
+[data-skin="wotlk"] .plate-num { font-family: var(--display); color: #5A1A08; }
+[data-skin="wotlk"] .plate-street { font-family: var(--display); color: #3A2510; }
+[data-skin="wotlk"] .plate-postal { background: #5A1A08; color: #FFD100; }
+[data-skin="wotlk"] .curb { background: linear-gradient(170deg, rgba(27,74,120,.55), rgba(6,11,22,.95) 50%); box-shadow: inset 0 0 0 1px #5E6E86, 0 0 26px rgba(127,212,255,.15); }
+[data-skin="wotlk"] .curb::before, [data-skin="wotlk"] .curb::after { background: radial-gradient(circle at 35% 35%, #FFF3B0, #B8860B); }
+[data-skin="wotlk"] .curb-kicker { color: var(--frost); font-family: var(--display); }
+[data-skin="wotlk"] .curb-line { background: linear-gradient(90deg, transparent, var(--frost), transparent); height: 3px; border: 0; margin-top: -36px; box-shadow: 0 0 10px var(--frost); }
+[data-skin="wotlk"] .curb-carts .cart { filter: drop-shadow(0 0 6px rgba(127,212,255,.4)); }
+[data-skin="wotlk"] .cw-date { color: #FFD100; font-family: var(--display); }
+[data-skin="wotlk"] .house-icon, [data-skin="wotlk"] .evicon { background: #0B1426; box-shadow: inset 0 0 0 1px #C9A44C; color: #FFD100; }
+
+/* ---------- lists, tables, calendar ---------- */
+[data-skin="wotlk"] .sheet-table thead th, [data-skin="wotlk"] .sheet-table tfoot :is(th, td) { background: #0B1426; color: #C9A44C; font-family: var(--display); }
+[data-skin="wotlk"] .sheet-table .sticky { background: #08101F; }
+[data-skin="wotlk"] .sheet-table tfoot :is(th, td) { border-top-color: #C9A44C; }
+[data-skin="wotlk"] td.payer { background: rgba(30,255,0,.08); }
+[data-skin="wotlk"] .gauge i.lit { box-shadow: 0 0 6px currentColor; }
+[data-skin="wotlk"] .step::before { background: radial-gradient(circle at 40% 35%, #FFF3B0, #B8860B); color: #140C00; }
+[data-skin="wotlk"] .step::after { background: linear-gradient(#C9A44C, transparent); }
+[data-skin="wotlk"] .rday.today b, [data-skin="wotlk"] .mday.today b { background: #FFD100; color: #140C00; }
+[data-skin="wotlk"] .rday.sel::after { background: var(--frost); box-shadow: 0 0 8px var(--frost); }
+[data-skin="wotlk"] .roster-head { background: #0B1426; }
+[data-skin="wotlk"] .rday small, [data-skin="wotlk"] .mhead { color: #C9A44C; font-family: var(--display); }
+[data-skin="wotlk"] .lane-cell.sel { background: rgba(127,212,255,.08); }
+[data-skin="wotlk"] .mday.sel { background: rgba(127,212,255,.1); box-shadow: inset 0 0 0 1px var(--frost); }
+[data-skin="wotlk"] .evtime, [data-skin="wotlk"] .today-time { color: var(--frost); font-family: var(--display); }
+[data-skin="wotlk"] .whos-home { background: rgba(127,212,255,.08); color: var(--frost); }
+
+/* ---------- sheets + toasts ---------- */
+[data-skin="wotlk"] .sheet-backdrop { background: rgba(2,5,12,.7); }
+[data-skin="wotlk"] .sheet { background: linear-gradient(#0C1830, #060B16 40%); border: 1px solid #5E6E86; border-bottom: 0; box-shadow: 0 -6px 30px rgba(127,212,255,.15); }
+[data-skin="wotlk"] .sheet-grip { background: #C9A44C; }
+/* toasts read like the yellow raid-warning text */
+[data-skin="wotlk"] .toast { background: rgba(6,12,26,.95); border: 1px solid #5E6E86; color: #FFD100; text-shadow: 0 1px 0 #000; }
+[data-skin="wotlk"] .toast button { color: var(--frost); }
+[data-skin="wotlk"] .code { color: #A335EE; background: #0B1426; border-color: #A335EE; }

@@ -15,12 +15,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="theme-cyber.css" />
+  <link rel="stylesheet" href="theme-osrs.css" />
+  <link rel="stylesheet" href="theme-wotlk.css" />
+  <link rel="stylesheet" href="theme-persona.css" />
+  <link rel="stylesheet" href="theme-moonring.css" />
   <script>
     try {
       const look = JSON.parse(localStorage.getItem("tmo.look") || "{}");
       const r = document.documentElement;
       r.dataset.skin = look.skin || "outpost";
-      if (look.skin === "cyber") r.dataset.theme = "dark";
+      if (look.skin === "persona") r.dataset.theme = "light";
+      else if (look.skin && look.skin !== "outpost") r.dataset.theme = "dark";
       else if (look.mode === "light" || look.mode === "dark") r.dataset.theme = look.mode;
     } catch (e) { /* defaults */ }
   </script>

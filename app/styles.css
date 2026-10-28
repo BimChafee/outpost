@@ -781,6 +781,34 @@ select { width: 100%; min-height: 50px; padding: 10px 12px; border: 1.5px solid 
 .skin-cyber .sp-row i { background: rgba(18,11,36,.9); box-shadow: inset 0 0 0 1px #3E3274; clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 0 100%); }
 .skin-cyber .sp-btn { background: #FCEE09; box-shadow: inset -4px 0 0 #00F0FF; clip-path: polygon(6px 0, 100% 0, 100% 100%, 0 100%, 0 6px); }
 .skin-cyber .sp-swatches i { border-radius: 0; }
+
+/* preview cards for the game skins */
+.skin-osrs .skin-preview { background: #2B241C; }
+.skin-osrs .sp-bar { background: #6E2B1B; height: 8px; box-shadow: inset 1px 1px 0 #74634B; }
+.skin-osrs .sp-title { font: 600 1.05rem "Pixelify Sans", monospace; color: #FFFF00; text-shadow: 1px 1px 0 #000; }
+.skin-osrs .sp-row i { background: #4A3F31; border: 2px solid #1E1912; box-shadow: inset 1px 1px 0 #74634B; }
+.skin-osrs .sp-btn { background: #D8CCB4; border: 2px solid #1E1912; }
+.skin-osrs .sp-swatches i { border-radius: 0; }
+.skin-wotlk .skin-preview { background: radial-gradient(90% 60% at 50% 0%, #1B4A78, #070D18 70%); }
+.skin-wotlk .sp-bar { background: linear-gradient(90deg, transparent, #7FD4FF, transparent); height: 3px; box-shadow: 0 0 6px #7FD4FF; }
+.skin-wotlk .sp-title { font: 700 1.05rem "Cinzel", Georgia, serif; color: #FFD100; text-shadow: 0 0 6px rgba(127,212,255,.6); }
+.skin-wotlk .sp-row i { background: rgba(6,12,26,.92); border: 1px solid #5E6E86; border-radius: 3px; }
+.skin-wotlk .sp-btn { background: linear-gradient(#A3271A, #3E0904); border: 1px solid #C9A44C; border-radius: 3px; }
+.skin-persona .skin-preview { background: linear-gradient(115deg, #F4F1EC 0 58%, #E60012 58% 76%, #0B0B0B 76% 79%, #F4F1EC 79%); }
+.skin-persona .sp-bar { background: #0B0B0B; height: 8px; transform: skew(-20deg); }
+.skin-persona .sp-title { font: 400 1.15rem "Anton", Impact, sans-serif; color: #fff; background: #0B0B0B; justify-self: start; padding: 0 8px; transform: rotate(-3deg); box-shadow: 3px 3px 0 #E60012; }
+.skin-persona .sp-row i { background: #fff; border: 2px solid #0B0B0B; box-shadow: 2px 2px 0 #E60012; }
+.skin-persona .sp-btn { background: #E60012; border: 2px solid #0B0B0B; clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%); }
+.skin-persona .sp-swatches i { border-radius: 0; outline: 1px solid #0B0B0B; }
+.skin-moonring .skin-preview { background: #000; }
+.skin-moonring .sp-bar { height: 0; border-top: 1.5px solid #7B3CFF; width: 70%; }
+.skin-moonring .sp-title { font: 400 1.05rem "Poiret One", sans-serif; color: #fff; letter-spacing: .14em; }
+.skin-moonring .sp-row i { border: 1.5px solid #7B3CFF; }
+.skin-moonring .sp-btn { border: 1.5px solid #FF2BD6; box-shadow: 0 0 8px rgba(255,43,214,.5); width: 45%; }
+.skin-moonring .sp-swatches i { border-radius: 50%; }
+/* skins with wider type: the plate wraps instead of clipping the postal code */
+[data-skin]:not([data-skin="outpost"]) .plate-street { white-space: normal; }
+[data-skin]:not([data-skin="outpost"]) .plate-city { white-space: normal; overflow: visible; display: flex; flex-wrap: wrap; gap: 2px 6px; align-items: center; }
 .seg.seg3 { grid-template-columns: repeat(3, 1fr); }
 .seg.seg3 button { text-align: center; }
 
