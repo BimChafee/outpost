@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>Outpost tests</title>
+<style>body{font:14px/1.5 monospace;padding:16px} .pass{color:#2F6B62} .fail{color:#B4532A;font-weight:bold}</style></head>
+<body>
+<h1>Outpost logic tests</h1>
+<pre id="out"></pre>
+<script type="module">
+import { splitCents, billShares, billTotal, balances, settleUp } from './js/money.js';
+import { upcomingPickups } from './js/schedule.js';
+import { parseReceiptText } from './js/receipt.js';
+
+const out = document.getElementById('out');
+let pass = 0, fail = 0;
+const eq = (name, got, want) => {
+  const ok = JSON.stringify(got) === JSON.stringify(want);
+  ok ? pass++ : fail++;
+  out.insertAdjacentHTML('beforeend', `<span class="${ok ? 'pass' : 'fail'}">${ok ? 'PASS' : 'FAIL'} ${name}${ok ? '' : `\n   got  ${JSON.stringify(got)}\n   want ${JSON.stringify(want)}`}</span>\n`);
+};
+
+// money
+eq('splitCents even remainder', splitCents(1000, { a: 1, b: 1, c: 1 }), { a: 334, b: 333, c: 333 });
+eq('splitCents weighted', splitCents(1000, { a: 2, b: 1, c: 1 }), { a: 500, b: 250, c: 250 });
+eq('splitCents negative', splitCents(-100, { a: 1, b: 1, c: 1 }), { a: -34, b: -33, c: -33 });
+
+const grocery = {
+  kind: 'bill', paidBy: 'a', participants: ['a', 'b', 'c'], splitMode: 'items',
+  items: [
+    { name: 'Steak', price: '20.00', assigned: ['a'] },
+    { name: 'Milk', price: '6.00', assigned: [] },           // shared by all
+    { name: 'Wine', price: '10.00', assigned: ['b', 'c'] },
+  ],
+  tax: '3.60', total: '',
+};
+eq('billTotal from items+tax', billTotal(grocery), 3960);
+const sh = billShares(grocery);
+// subtotals a=2200 b=700 c=700 ; tax 360 prorated 220/70/70
+eq('item shares with prorated tax', sh, { a: 2420, b: 770, c: 770 });
+eq('item shares sum to total', Object.values(sh).reduce((s, v) => s + v, 0), 3960);
+
+const rent = { kind: 'bill', paidBy: 'b', participants: ['a', 'b', 'c'], splitMode: 'shares', shares: { a: 1.5, b: 1, c: 1 }, total: '2800' };
+eq('shares split', billShares(rent), { a: 120000, b: 80000, c: 80000 });
+
+const bal = balances([grocery, rent, { kind: 'payment', from: 'c', to: 'b', amount: '100' }], ['a', 'b', 'c']);
+// grocery: a +3960-2420=+1540, b -770, c -770 ; rent: b +280000-80000=+200000, a -120000, c -80000 ; payment c +10000, b -10000
+eq('balances', bal, { a: -118460, b: 189230, c: -70770 });
+eq('balances sum to zero', Object.values(bal).reduce((s, v) => s + v, 0), 0);
+eq('settleUp', settleUp(bal), [{ from: 'a', to: 'b', amount: 118460 }, { from: 'c', to: 'b', amount: 70770 }]);
+
+// schedule
+const bundled = { days: { '2026-11-02': ['organics', 'yardwaste'], '2026-11-09': ['garbage', 'organics', 'yardwaste'], '2026-11-11': ['holiday'] } };
+const ups = upcomingPickups(bundled, null, new Date(2026, 9, 28, 9), 4);
+eq('next pickup is Nov 2 recycling week', ups[0], { date: '2026-11-02', streams: ['recycling', 'organics', 'yardwaste'], estimated: false });
+eq('Nov 9 garbage week', ups[1].streams, ['garbage', 'organics', 'yardwaste']);
+eq('extrapolated Nov 16 = recycling', [ups[2].date, ups[2].streams[0], ups[2].estimated], ['2026-11-16', 'recycling', true]);
+eq('extrapolated Nov 23 = garbage', [ups[3].date, ups[3].streams[0]], ['2026-11-23', 'garbage']);
+const winter = upcomingPickups({ days: {} }, null, new Date(2027, 0, 20), 2);
+eq('winter extrapolation has no yard waste', winter.map((p) => p.streams.length), [2, 2]);
+const live = { days: { '2026-11-03': ['organics'] } };
+eq('live schedule merges in (holiday shift)', upcomingPickups({ days: {} }, live, new Date(2026, 10, 1), 1)[0].date, '2026-11-03');
+
+// receipt parsing
+const r = parseReceiptText(`NO FRILLS #3412
+2026-10-25 14:02
+BANANAS          1.47
+2% MILK 4L       6.29 H
+CHICKEN THIGHS  12.48
+COUPON          -1.00
+SUBTOTAL        19.24
+HST 13%          0.82
+TOTAL           20.06
+DEBIT           20.06`);
+eq('receipt merchant', r.merchant, 'NO FRILLS #3412');
+eq('receipt date', r.date, '2026-10-25');
+eq('receipt items', r.items.map((i) => [i.name, i.price]), [['BANANAS', 1.47], ['2% MILK 4L', 6.29], ['CHICKEN THIGHS', 12.48], ['COUPON', -1]]);
+eq('receipt tax/total', [r.tax, r.subtotal, r.total], [0.82, 19.24, 20.06]);
+
+out.insertAdjacentHTML('afterbegin', `<b id="summary">${fail ? 'FAILED' : 'ALL PASSED'}: ${pass} passed, ${fail} failed</b>\n\n`);
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+name: Nightly reminders
+
+on:
+  schedule:
+    # 23:15 and 00:15 UTC = 7:15 / 8:15 p.m. Toronto in summer, 6:15 / 7:15 p.m. in winter.
+    # Two runs because GitHub sometimes delays or drops scheduled runs; the script sends once per night.
+    - cron: "15 23 * * *"
+    - cron: "15 0 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Send now, even outside the evening window (for testing)"
+        type: boolean
+        default: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: notifier/requirements.txt
+      - run: pip install -r notifier/requirements.txt
+      - run: python notifier/notify.py
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          HOUSEHOLD_ID: ${{ secrets.HOUSEHOLD_ID }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          APP_URL: ${{ vars.APP_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+          TRIGGER: ${{ github.event.schedule }}
+          FORCE: ${{ inputs.force && '1' || '' }}

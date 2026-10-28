@@ -1,0 +1,9 @@
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+# Never commit the Firebase *service account* key (the web config in app/config.js is fine to commit)
+*serviceAccount*.json
+*-firebase-adminsdk-*.json
+# Obsidian vault settings
+.obsidian/
