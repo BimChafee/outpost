@@ -8,7 +8,7 @@
 <script type="module">
 import { splitCents, billShares, billTotal, balances, settleUp } from './js/money.js';
 import { upcomingPickups } from './js/schedule.js';
-import { parseReceiptText } from './js/receipt.js';
+import { parseReceiptText, reconcile } from './js/receipt.js';
 
 const out = document.getElementById('out');
 let pass = 0, fail = 0;
@@ -65,15 +65,29 @@ const r = parseReceiptText(`NO FRILLS #3412
 BANANAS          1.47
 2% MILK 4L       6.29 H
 CHICKEN THIGHS  12.48
-COUPON          -1.00
-SUBTOTAL        19.24
-HST 13%          0.82
-TOTAL           20.06
-DEBIT           20.06`);
-eq('receipt merchant', r.merchant, 'NO FRILLS #3412');
+0.875 kg @ $1.68/kg
+COUPON          ~1.00
+PAPER TOWEL 6PK  9.99 4
+SUBTOTAL        29.23
+HST 13%          1.30
+TOTAL           30.53
+DEBIT           30.53
+CHANGE           0.00`);
+eq('receipt merchant', r.merchant, 'No Frills 3412');
 eq('receipt date', r.date, '2026-10-25');
-eq('receipt items', r.items.map((i) => [i.name, i.price]), [['BANANAS', 1.47], ['2% MILK 4L', 6.29], ['CHICKEN THIGHS', 12.48], ['COUPON', -1]]);
-eq('receipt tax/total', [r.tax, r.subtotal, r.total], [0.82, 19.24, 20.06]);
+eq('receipt items (misread minus, stray tax flag, weighed line skipped, stops at total)', r.items.map((i) => [i.name, i.price]),
+  [['Bananas', 1.47], ['2% milk 4l', 6.29], ['Chicken thighs', 12.48], ['Coupon', -1], ['Paper towel 6pk', 9.99]]);
+eq('receipt tax/total', [r.tax, r.subtotal, r.total], [1.3, 29.23, 30.53]);
+eq('reconcile ok', reconcile(r).ok, true);
+eq('reconcile mismatch', reconcile({ ...r, subtotal: 28.23 }).diff, -100);
+const split = parseReceiptText(`EGGS LARGE 12
+4.49
+TOTAL 4.49`);
+eq('price on the next line', split.items.map((i) => [i.name, i.price]), [['Eggs large 12', 4.49]]);
+const trailingMinus = parseReceiptText(`STORE CARD SAVINGS DISC 2.00-
+STEAK 10.00
+TOTAL 8.00`);
+eq('trailing minus discount', trailingMinus.items.map((i) => i.price), [-2, 10]);
 
 out.insertAdjacentHTML('afterbegin', `<b id="summary">${fail ? 'FAILED' : 'ALL PASSED'}: ${pass} passed, ${fail} failed</b>\n\n`);
 </script>

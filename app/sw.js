@@ -1,13 +1,13 @@
 // Service worker: offline app shell + background push display.
 importScripts('./config.js');
 
-const VERSION = 'tmo-v3';
+const VERSION = 'tmo-v4';
 const SHELL = [
   './', './index.html', './styles.css', './config.js', './manifest.webmanifest',
   './data/schedule.json', './icons/icon-192.png', './icons/icon-512.png',
   './js/main.js', './js/ui.js', './js/store.js', './js/schedule.js', './js/money.js', './js/receipt.js', './js/push.js',
   './js/views/home.js', './js/views/groceries.js', './js/views/ledger.js', './js/views/bill.js',
-  './js/views/upkeep.js', './js/views/settings.js', './js/views/setup.js',
+  './js/views/upkeep.js', './js/views/settings.js', './js/views/setup.js', './js/views/camera.js',
 ];
 
 self.addEventListener('install', (e) => {

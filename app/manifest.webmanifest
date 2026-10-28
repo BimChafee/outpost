@@ -7,8 +7,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#E6E8E4",
-  "theme_color": "#2E3436",
+  "background_color": "#DCE2DF",
+  "theme_color": "#DCE2DF",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
@@ -16,6 +16,6 @@
   ],
   "shortcuts": [
     { "name": "Groceries", "url": "./#groceries", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Scan a receipt", "url": "./#ledger", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+    { "name": "Scan a receipt", "url": "./#scan", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

@@ -40,7 +40,7 @@ export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe 
   };
 
   return html`
-    <h1 class="page-title">Settings</h1>
+    <div class="page-head"><h1 class="page-title">Settings</h1></div>
 
     <section class="block">
       <h2>This phone belongs to</h2>
@@ -67,7 +67,7 @@ export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe 
       ${st.mode === 'shared' ? html`
         <p>Household code <code class="code">${hid}</code></p>
         <div class="actions">
-          <button class="btn primary" onClick=${share}><${Icon} name="copy" /> Share invite link</button>
+          <button class="btn primary" onClick=${share}><${Icon} name="share" /> Share invite link</button>
         </div>
         <p class="hint">Anyone with the code can see and edit this household. Only share it with people who live here.</p>` : html`
         <p class="hint">This household is stored on this phone only. To share it, add your Firebase config to config.js and redeploy (see README). You'll then start a fresh shared household.</p>`}
@@ -93,7 +93,7 @@ export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe 
 
     <section class="block">
       <h2>Household</h2>
-      <p class="quiet">${household.address} · ${st.mode === 'shared' ? 'Synced through Firebase' : 'This phone only'}</p>
+      <p class="quiet">${household.address}. ${st.mode === 'shared' ? 'Synced through Firebase.' : 'Stored on this phone only.'}</p>
       <button class="btn danger" onClick=${() => confirm('Disconnect this phone from the household? The data stays for your roommates.') && onLeave()}>Disconnect this phone</button>
     </section>`;
 }
