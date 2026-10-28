@@ -1,9 +1,32 @@
-import { html, useState, Icon, Chip, MEMBER_COLORS, toast } from '../ui.js';
+import { html, useState, useEffect, Icon, Chip, MEMBER_COLORS, toast } from '../ui.js';
 import { newId } from '../store.js';
 import { enablePush, pushAvailable, pushPermission } from '../push.js';
 import { CLAUDE_KEY } from './bill.js';
 import { HouseDetails } from './house.js';
 import { LookSettings } from './look.js';
+
+function AppVersion() {
+  const [state, setState] = useState('idle');
+  const [version, setVersion] = useState('');
+  useEffect(() => {
+    if (!('caches' in self)) return;
+    caches.keys().then((keys) => setVersion((keys.find((k) => k.startsWith('tmo-')) || '').replace('tmo-v', ''))).catch(() => {});
+  }, []);
+  const check = async () => {
+    setState('checking');
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration();
+      await reg?.update();
+      if (reg?.installing || reg?.waiting) { setState('updating'); return; } // reloads itself when it takes over
+      setState('latest');
+    } catch { setState('offline'); }
+  };
+  return html`<section class="block">
+    <h2>App version</h2>
+    <p class="quiet">${version ? `Version ${version}.` : ''} ${state === 'latest' ? "You're on the latest version." : state === 'updating' ? 'Updating. The app will reload in a moment.' : state === 'offline' ? "Couldn't reach the server. Check your connection." : 'New versions load automatically when you reopen the app.'}</p>
+    <button class="btn" onClick=${check} disabled=${state === 'checking' || state === 'updating'}>${state === 'checking' ? 'Checking…' : 'Check for updates'}</button>
+  </section>`;
+}
 
 export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe }) {
   const [newName, setNewName] = useState('');
@@ -101,5 +124,7 @@ export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe 
       <h2>Household</h2>
       <p class="quiet">${household.address}. ${st.mode === 'shared' ? 'Synced through Firebase.' : 'Stored on this phone only.'}</p>
       <button class="btn danger" onClick=${() => confirm('Disconnect this phone from the household? The data stays for your roommates.') && onLeave()}>Disconnect this phone</button>
-    </section>`;
+    </section>
+
+    <${AppVersion} />`;
 }

@@ -1,7 +1,7 @@
 // Service worker: offline app shell + background push display.
 importScripts('./config.js');
 
-const VERSION = 'tmo-v8';
+const VERSION = 'tmo-v9';
 const SHELL = [
   './', './index.html', './styles.css', './theme-cyber.css', './js/theme.js', './js/views/look.js', './config.js', './manifest.webmanifest',
   './data/schedule.json', './icons/icon-192.png', './icons/icon-512.png',
@@ -29,7 +29,12 @@ self.addEventListener('fetch', (e) => {
   if (!own && !pinnedCdn) return; // Firestore, Anthropic API, etc. go straight to the network
 
   if (own) {
-    e.respondWith(fetch(e.request).then((res) => {
+    // Always revalidate with the server (cheap 304s), so a deploy shows up on the next open
+    // instead of waiting out GitHub Pages' 10-minute browser cache.
+    const fresh = e.request.mode === 'navigate'
+      ? fetch(e.request.url, { cache: 'no-cache', credentials: 'same-origin' })
+      : fetch(e.request, { cache: 'no-cache' });
+    e.respondWith(fresh.then((res) => {
       const copy = res.clone();
       caches.open(VERSION).then((c) => c.put(e.request, copy));
       return res;

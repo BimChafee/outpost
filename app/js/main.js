@@ -151,7 +151,15 @@ function App({ st, bundledSchedule }) {
 async function boot() {
   applyTheme();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-    navigator.serviceWorker.register('./sw.js').catch((e) => console.warn('SW registration failed', e));
+    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then((reg) => {
+      // Look for a new version whenever the app comes back to the foreground.
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+    }).catch((e) => console.warn('SW registration failed', e));
+    // A new version took over: reload once so every screen runs the new code.
+    if (navigator.serviceWorker.controller) {
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded) { reloaded = true; location.reload(); } });
+    }
   }
   const [st, bundledSchedule] = await Promise.all([
     openStore(),
