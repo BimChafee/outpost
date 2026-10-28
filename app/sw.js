@@ -1,13 +1,13 @@
 // Service worker: offline app shell + background push display.
 importScripts('./config.js');
 
-const VERSION = 'tmo-v11';
+const VERSION = 'tmo-v12';
 const SHELL = [
   './', './index.html', './styles.css', './theme-cyber.css', './theme-osrs.css', './theme-wotlk.css', './theme-persona.css', './theme-moonring.css', './js/theme.js', './js/views/look.js', './config.js', './manifest.webmanifest',
   './data/schedule.json', './icons/icon-192.png', './icons/icon-512.png',
   './js/main.js', './js/ui.js', './js/store.js', './js/schedule.js', './js/money.js', './js/receipt.js', './js/push.js',
   './js/views/home.js', './js/views/groceries.js', './js/views/ledger.js', './js/views/bill.js',
-  './js/views/upkeep.js', './js/views/settings.js', './js/views/setup.js', './js/views/camera.js', './js/views/grocery-edit.js', './js/grocery-model.js', './js/calendar-model.js', './js/views/calendar.js', './js/views/event-edit.js', './js/views/house.js', './js/views/today.js',
+  './js/views/upkeep.js', './js/views/settings.js', './js/views/setup.js', './js/views/camera.js', './js/views/grocery-edit.js', './js/grocery-model.js', './js/calendar-model.js', './js/views/calendar.js', './js/views/event-edit.js', './js/views/house.js', './js/views/today.js', './js/outpost-model.js', './js/views/quests.js', './js/views/shop.js', './js/views/scene.js', './js/views/outpost-card.js',
 ];
 
 self.addEventListener('install', (e) => {

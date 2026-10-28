@@ -4,6 +4,7 @@ import { balances, settleUp, fmt } from '../money.js';
 import { upkeepStatus } from './upkeep.js';
 import { HousePlate } from './house.js';
 import { TodayCard } from './today.js';
+import { OutpostCard } from './outpost-card.js';
 
 const listNames = (keys) => {
   const n = keys.map((k) => STREAMS[k].label.toLowerCase());
@@ -85,6 +86,8 @@ export function Home(props) {
     </section>
 
     <${TodayCard} ...${props} />
+
+    <${OutpostCard} ...${props} />
 
     <section class="block" aria-labelledby="house-h">
       <h2 id="house-h" class="block-title">Around the house</h2>

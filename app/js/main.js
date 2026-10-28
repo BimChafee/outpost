@@ -10,15 +10,20 @@ import { Settings } from './views/settings.js';
 import { Setup } from './views/setup.js';
 import { ReceiptCamera } from './views/camera.js';
 import { Calendar } from './views/calendar.js';
+import { Quests } from './views/quests.js';
+import { Shop } from './views/shop.js';
 import { applyTheme } from './theme.js';
 
 const TABS = [
   { id: 'home', label: 'Home', icon: 'home' },
   { id: 'groceries', label: 'Groceries', icon: 'cart' },
-  { id: 'scan' },
   { id: 'ledger', label: 'Bills', icon: 'ledger' },
   { id: 'calendar', label: 'Calendar', icon: 'calendar' },
+  { id: 'quests', label: 'Quests', icon: 'quest' },
+  { id: 'shop', label: 'Shop', icon: 'castle' },
 ];
+// The receipt scanner floats over the screens where receipts come up.
+const SCAN_ON = ['home', 'groceries', 'ledger'];
 
 const readRoute = () => {
   const [tab, ...rest] = (location.hash.slice(1) || 'home').split('/');
@@ -38,7 +43,7 @@ function useRoute() {
 
 /** Subscribes to the whole household. Small data set, so everything is kept live in memory. */
 function useHousehold(st, hid) {
-  const [state, set] = useState({ household: undefined, groceries: [], ledger: [], upkeep: [], tags: [], events: [], liveSchedule: null });
+  const [state, set] = useState({ household: undefined, groceries: [], ledger: [], upkeep: [], tags: [], events: [], quests: [], questlog: [], liveSchedule: null });
   useEffect(() => {
     if (!hid) return;
     const patch = (k) => (v) => set((s) => ({ ...s, [k]: v }));
@@ -49,6 +54,8 @@ function useHousehold(st, hid) {
       st.watch(hid, 'upkeep', patch('upkeep')),
       st.watch(hid, 'tags', patch('tags')),
       st.watch(hid, 'events', patch('events')),
+      st.watch(hid, 'quests', patch('quests')),
+      st.watch(hid, 'questlog', patch('questlog')),
       st.watchMeta(hid, 'schedule', patch('liveSchedule')),
     ];
     return () => offs.forEach((off) => off && off());
@@ -113,6 +120,8 @@ function App({ st, bundledSchedule }) {
   else if (tab === 'bill') view = html`<${BillEditor} key=${arg} ...${ctx} billId=${arg} />`;
   else if (tab === 'upkeep') view = html`<${Upkeep} ...${ctx} />`;
   else if (tab === 'calendar') view = html`<${Calendar} ...${ctx} />`;
+  else if (tab === 'quests') view = html`<${Quests} ...${ctx} />`;
+  else if (tab === 'shop') view = html`<${Shop} ...${ctx} />`;
   else if (tab === 'settings') view = html`<${Settings} ...${ctx} onLeave=${leave} onSwitchMe=${(m) => { session.me = m; setMe(m); }} />`;
   else view = html`<${Home} ...${ctx} />`;
 
@@ -134,15 +143,15 @@ function App({ st, bundledSchedule }) {
     ${st.mode === 'local' && html`<p class="local-banner">Saved on this phone only. Roommates can't see it until Firebase is set up.</p>`}
     <main class="view" id="main">${view}</main>
     <nav class="tabbar" aria-label="Sections">
-      ${TABS.map((t) => t.id === 'scan' ? html`
-        <button class="tab-scan" onClick=${() => openCamera()} aria-label="Scan a receipt">
-          <span class="tab-scan-disc"><${Icon} name="camera" size=${26} /></span>
-          <span class="tab-scan-label">Scan</span>
-        </button>` : html`
+      ${TABS.map((t) => html`
         <a href=${'#' + t.id} class=${activeTab === t.id ? 'tab on' : 'tab'} aria-current=${activeTab === t.id ? 'page' : undefined}>
           <${Icon} name=${t.icon} /><span>${t.label}</span>
         </a>`)}
     </nav>
+    ${SCAN_ON.includes(activeTab || 'home') && html`<button class="tab-scan scan-fab" onClick=${() => openCamera()} aria-label="Scan a receipt">
+      <span class="tab-scan-disc"><${Icon} name="camera" size=${26} /></span>
+      <span class="tab-scan-label">Scan</span>
+    </button>`}
     ${camera && html`<${ReceiptCamera} onClose=${() => setCamera(null)}
       onDone=${(photos) => { setCamera(null); if (photos.length) camera.onDone(photos); }} />`}
     <${Toasts} />`;

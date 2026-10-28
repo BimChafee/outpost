@@ -4,6 +4,22 @@ import { enablePush, pushAvailable, pushPermission } from '../push.js';
 import { CLAUDE_KEY } from './bill.js';
 import { HouseDetails } from './house.js';
 import { LookSettings } from './look.js';
+import { questMasters, canManageQuests } from '../outpost-model.js';
+
+function QuestMasters({ st, hid, household, members, me }) {
+  const ids = questMasters(household, members);
+  const can = canManageQuests(household, members, me);
+  const toggle = async (id) => {
+    const next = ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id];
+    if (!next.length) return toast('Keep at least one person who can create quests');
+    try { await st.updateHousehold(hid, { questMasters: next }); } catch (e) { toast(e.message); }
+  };
+  return html`<section class="block">
+    <h2>Who can create quests</h2>
+    <div class="chip-row">${members.map((m) => html`<${Chip} m=${m} on=${ids.includes(m.id)} onClick=${can ? () => toggle(m.id) : undefined} />`)}</div>
+    <p class="hint">${can ? 'They can add, edit and delete quests. Everyone can complete quests and spend gold in the Shop.' : 'Only they can change this. Everyone can complete quests and spend gold in the Shop.'}</p>
+  </section>`;
+}
 
 function AppVersion() {
   const [state, setState] = useState('idle');
@@ -88,6 +104,8 @@ export function Settings({ st, hid, me, members, household, onLeave, onSwitchMe 
     </section>
 
     <${LookSettings} />
+
+    <${QuestMasters} st=${st} hid=${hid} household=${household} members=${members} me=${me} />
 
     <${HouseDetails} st=${st} hid=${hid} household=${household} />
 

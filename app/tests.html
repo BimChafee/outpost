@@ -11,6 +11,7 @@ import { upcomingPickups } from './js/schedule.js';
 import { parseReceiptText, reconcile } from './js/receipt.js';
 import { repeatText, dayTimeLabel, occurrences, packLane, weekStart, weekDays, monthGrid, awayOn, normaliseEvent, fmtTime, fmtTimeShort } from './js/calendar-model.js';
 import { rentInfo } from './js/views/house.js';
+import { xpForLevel, levelFromXp, treasury, crewLedger, choreState, stepReward, goalBounty, normaliseQuest, owned, priceOf, shopState, SHOP, binQuest, questMasters, canManageQuests } from './js/outpost-model.js';
 import { statusOf, applyView, sectionize, orderAfterMove, bumpQty, statusPatch, parseEntry, HISTORY_DAYS } from './js/grocery-model.js';
 
 const out = document.getElementById('out');
@@ -165,6 +166,41 @@ eq('all-day clears times', normaliseEvent({ title: 'x', date: '2026-11-02', allD
 const r1 = rentInfo({ rent: { amount: 5000, dueDay: 1 } }, new Date(2026, 9, 28, 10));
 eq('rent due on the 1st', [r1.next, r1.daysLeft, r1.label, r1.amountText], ['2026-11-01', 4, 'Due in 4 days', '$5,000']);
 eq('rent due today on the 1st', rentInfo({ rent: { amount: 5000, dueDay: 1 } }, new Date(2026, 10, 1, 10)).label, 'Due today');
+
+
+// outpost game
+eq('level thresholds', [xpForLevel(1), xpForLevel(2), xpForLevel(3), xpForLevel(5)], [0, 100, 300, 1000]);
+eq('level from xp', [levelFromXp(0).level, levelFromXp(99).level, levelFromXp(100).level, levelFromXp(650).level], [1, 1, 2, 4]);
+const lf = levelFromXp(650);
+eq('progress into level', [lf.into, lf.span, lf.toNext, lf.title], [50, 400, 350, 'Settlement']);
+const LOG = [
+  { type: 'quest', by: 'm1', gold: 25, xp: 25, at: 10 }, { type: 'quest', by: 'm2', gold: 50, xp: 50, at: 20 },
+  { type: 'upkeep', by: 'm1', gold: 20, xp: 20, at: 30 }, { type: 'purchase', itemId: 'walls', by: 'm2', gold: -80, xp: 0, at: 40 },
+  { type: 'purchase', itemId: 'walls', by: 'm1', gold: -145, xp: 0, at: 50 },
+];
+eq('treasury: purchases spend gold but keep xp', [treasury(LOG).gold, treasury(LOG).xp], [-130, 95]);
+eq('crew ledger ignores purchases', crewLedger(LOG, [{ id: 'm1' }, { id: 'm2' }], 0).map((r) => [r.id, r.gold, r.count]), [['m2', 50, 1], ['m1', 45, 2]]);
+eq('weekly chore cooldown', [choreState({ repeat: 'weekly', lastDone: '2026-10-25' }, '2026-10-28').ready, choreState({ repeat: 'weekly', lastDone: '2026-10-25' }, '2026-10-28').next, choreState({ repeat: 'weekly', lastDone: '2026-10-20' }, '2026-10-28').overdueDays], [false, '2026-11-01', 1]);
+eq('custom chore every 3 days', choreState({ repeat: 'custom', every: 3, lastDone: '2026-10-25' }, '2026-10-28').ready, true);
+eq('one-off chore done', choreState({ repeat: 'once', done: true }, '2026-10-28').ready, false);
+const goal = { kind: 'goal', gold: 150, xp: 150, steps: [{}, {}, {}, {}] };
+eq('goal rewards: steps share 20%, bounty the rest', [stepReward(goal), goalBounty(goal)], [{ gold: 8, xp: 8 }, { gold: 120, xp: 120 }]);
+eq('goal needs steps', normaliseQuest({ title: 'Garage', kind: 'goal', gold: 100, xp: 100, steps: [{ title: ' ' }] }).ok, false);
+eq('chore saved', normaliseQuest({ title: ' Dishes ', kind: 'chore', gold: '10', xp: '10', repeat: 'daily' }).doc, { title: 'Dishes', kind: 'chore', notes: '', gold: 10, xp: 10, repeat: 'daily', every: null, assignee: null, steps: [] });
+eq('owned tiers from purchases, capped', owned([...LOG, ...Array(9).fill({ type: 'purchase', itemId: 'flag' })]).walls + owned([...Array(9).fill({ type: 'purchase', itemId: 'flag' })]).flag, 3);
+const walls = SHOP.find((x) => x.id === 'walls');
+eq('prices grow by tier', [0, 1, 2, 3].map((n) => priceOf(walls, n)), [80, 145, 260, 465]);
+const tower = SHOP.find((x) => x.id === 'tower');
+eq('locked until level', [shopState(tower, 0, 1, 999).locked, shopState(tower, 0, 2, 999).affordable], [true, true]);
+eq('short of gold', shopState(walls, 1, 3, 100), { maxed: false, price: 145, locked: false, next: 'Sandbag line', current: 'Timber palisade', affordable: false, short: 45 });
+eq('maxed', shopState(walls, 4, 9, 9999).maxed, true);
+const pk = [{ date: '2026-11-02', streams: ['recycling', 'organics'] }];
+eq('bin quest shows the night before', binQuest(pk, [], new Date(2026, 10, 1, 19)).key, 'bins@2026-11-02');
+eq('bin quest hidden two days out', binQuest(pk, [], new Date(2026, 9, 31, 19)), null);
+eq('bin quest done', binQuest(pk, [{ key: 'bins@2026-11-02' }], new Date(2026, 10, 2, 7)).done, true);
+const crew = [{ id: 'm1', name: 'Bryan' }, { id: 'm2', name: 'Sam' }];
+eq('quest masters default to Bryan', [questMasters({}, crew), canManageQuests({}, crew, 'm2')], [['m1'], false]);
+eq('quest masters from household', canManageQuests({ questMasters: ['m2'] }, crew, 'm2'), true);
 
 out.insertAdjacentHTML('afterbegin', `<b id="summary">${fail ? 'FAILED' : 'ALL PASSED'}: ${pass} passed, ${fail} failed</b>\n\n`);
 </script>

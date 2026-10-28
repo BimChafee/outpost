@@ -1,5 +1,6 @@
 import { html, useState, Icon, Sheet, Chip, Sign, memberById, shortDate, today, toast } from '../ui.js';
 import { parseDay, addDays, dayKey, daysBetween } from '../schedule.js';
+import { UPKEEP_REWARD } from '../outpost-model.js';
 
 const SUGGESTIONS = [
   { name: 'Furnace air filter', intervalDays: 90 },
@@ -36,10 +37,14 @@ export function Upkeep({ st, hid, me, members, upkeep }) {
   const markDone = async (u) => {
     const before = { lastDone: u.lastDone, lastDoneBy: u.lastDoneBy || null, history: u.history || [] };
     const history = [{ date: today(), by: me }, ...(u.history || [])].slice(0, 12);
-    try { await st.update(hid, 'upkeep', u.id, { lastDone: today(), lastDoneBy: me, history }); }
-    catch (e) { console.error(e); return toast(`Couldn't update the job: ${e.message}`); }
-    toast(`${u.name} done. Next due ${shortDate(upkeepStatus({ ...u, lastDone: today() }).due)}.`,
-      { label: 'Undo', run: () => st.update(hid, 'upkeep', u.id, before) });
+    let logId = null;
+    try {
+      await st.update(hid, 'upkeep', u.id, { lastDone: today(), lastDoneBy: me, history });
+      // Upkeep pays the house like a quest.
+      logId = await st.add(hid, 'questlog', { type: 'upkeep', title: u.name, by: me, gold: UPKEEP_REWARD.gold, xp: UPKEEP_REWARD.xp, at: Date.now() });
+    } catch (e) { console.error(e); return toast(`Couldn't update the job: ${e.message}`); }
+    toast(`${u.name} done: +${UPKEEP_REWARD.gold} gold. Next due ${shortDate(upkeepStatus({ ...u, lastDone: today() }).due)}.`,
+      { label: 'Undo', run: () => { st.update(hid, 'upkeep', u.id, before); if (logId) st.remove(hid, 'questlog', logId); } });
   };
 
   return html`

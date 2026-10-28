@@ -16,6 +16,7 @@
   ],
   "shortcuts": [
     { "name": "Groceries", "url": "./#groceries", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Quests", "url": "./#quests", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "Calendar", "url": "./#calendar", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "Scan a receipt", "url": "./#scan", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
